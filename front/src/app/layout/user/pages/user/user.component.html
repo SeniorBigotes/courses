@@ -1,0 +1,57 @@
+<div class="container">
+    <div class="search">
+        <input type="text" placeholder="Buscar usuario">
+    </div>
+
+    <div class="button">
+        <button class="btn btn-pink btn-setting" (click)="onClick()">Nuevo</button>
+    </div>
+    
+    <p class="mensaje" [ngClass]="mostrarMensaje ? 'mensaje-mostrar' : 'mensaje-ocultar'">{{mensaje}}</p>
+
+    <table class="user">
+        <thead>
+            <tr>
+                <th>Nombres</th>
+                <th>Usuario</th>
+                <th>Rol</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(mostrarUsuarios) {
+                @for(usuario of usuarios; track usuario.id) {
+                    <tr>
+                        <td>{{usuario.nombres}} <span class="d-block">{{usuario.apellido_P}} {{usuario.apellido_M}}</span></td>
+                        <td>{{usuario.nombre_U}}</td>
+                        <td>{{roles[usuario.id]}}</td>
+                        <td class="td">
+                            <div class="d-flex align-items-center justify-content-center gap-3">
+                                <div class="editar" (click)="editarUsuario(usuario.id)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="20" height="20"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                </div>
+    
+                                <div class="eliminar" (click)="eliminarUsuario(usuario.id)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x" width="20" height="20"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M4 7h16" />
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                        <path d="M10 12l4 4m0 -4l-4 4" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

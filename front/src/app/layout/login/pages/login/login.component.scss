@@ -1,0 +1,109 @@
+@use '../../../../../styles.scss' as m;
+
+.login {
+    background-image: url('/assets/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 120vh;
+    position: relative;
+    
+    @include m.tablet {
+        height: 100vh;
+    }
+
+    .login-box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); // ayuda a centrar correctamente
+        content: "";
+        display: block;
+        height: 100%;
+        width: 65rem;
+        background-color: rgba(44, 1, 99, 0.4);
+        margin: auto;
+        filter: blur(10px);
+        // backdrop-filter: blur(.5px);
+    }
+
+    .login-user {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 70rem;
+        width: 45%;
+
+        .logo {
+            width: 22rem;
+            border-radius: 50%;
+        }
+
+        .login-data-bg {
+            background: rgb(45, 200, 253);
+            background: m.$bg-degraded;
+            border-radius: 1.5rem;
+            border: 1px solid m.$border-login;
+            height: 30rem;
+            width: 60rem;
+
+            p {
+                width: 95%;
+                text-align: center;
+            }
+
+            .input {
+                input {
+                    border: 2px inset m.$bg-input-login;
+                    border-radius: 1rem;
+                    background-color: m.$bg-input-login;
+                    padding: 1.5rem;
+                    width: 90%;
+                    font-size: 2.5rem;
+                    color: m.$color-text-login;
+                    
+                    &::placeholder {
+                        color: m.$color-text-login;
+                    }
+                }
+    
+                .message {
+                    color: m.$color-text-login;
+                    text-align: left;
+                    width: 85%;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    font-size: 1.4rem;
+                }
+            }
+
+        }
+
+        .error {
+            content: "";
+            position: absolute;
+            display: block;
+            bottom: -12rem;
+            background-color: rgba(m.$color-btn-login, .5);
+            width: 65rem;
+            height: 7rem;
+            filter: blur(10px);
+        }
+
+        .error-text {
+            position: absolute;
+            bottom: -10rem;
+            color: m.$color-text-login-error;
+        }
+
+        .error-in {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        .error-out {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+    }
+}

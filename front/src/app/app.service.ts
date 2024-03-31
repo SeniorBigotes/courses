@@ -1,0 +1,42 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AppService {
+
+  private usuariosUrl: string = 'http://localhost:3000/api/usuarios/';
+  private rolesUrl: string = 'http://localhost:3000/api/roles/';
+
+  constructor(private http: HttpClient) { }
+
+  getUsuarios(): Observable<any>  {
+    return this.http.get(this.usuariosUrl);
+  }
+
+  getUsuarioID(id: number): Observable<any> {
+    return this.http.get(`${this.usuariosUrl}/${id}`);
+  }
+
+  getUsuarioUsername(username: string): Observable<any> {
+    return this.http.get(`${this.usuariosUrl}/login/${username}`);
+  }
+
+  getRol(id: number): Observable<any> {
+    return this.http.get(`${this.rolesUrl}/${id}`);
+  }
+
+  postCrearUsuario(body: any): Observable<any> {
+    return this.http.post(`${this.usuariosUrl}`, body);
+  }
+
+  putUsuario(usuarioID: number, body: any): Observable<any> {
+    return this.http.put(`${this.usuariosUrl}/${usuarioID}`, body);
+  }
+
+  deleteUsuario(usuarioID: number): Observable<any> {
+    return this.http.delete(`${this.usuariosUrl}/${usuarioID}`);
+  }
+}

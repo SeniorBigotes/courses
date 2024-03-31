@@ -1,0 +1,9 @@
+@use '../../../../../styles.scss' as m;
+
+.upload {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 90vh;
+    padding-top: 25rem;
+}

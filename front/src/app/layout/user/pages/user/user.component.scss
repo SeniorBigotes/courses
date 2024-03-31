@@ -1,0 +1,78 @@
+@use '../../../../../styles.scss' as m;
+
+.search {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+
+    input {
+        font-size: 1.5rem;
+        border-radius: 1rem;
+        padding: .5rem;
+        width: 40rem;
+
+        &::placeholder {
+            font-style: italic;
+        }
+    }
+}
+
+.mensaje {
+    text-align: center;
+    color: white;
+    background: m.$bg-degraded;
+    padding: .3rem 1rem;
+    width: 45rem;
+    border-radius: 1rem;
+    font-size: 1.7rem;
+    
+    &.mensaje-mostrar {
+        visibility: visible;
+        opacity: 1;
+        height: 3.5rem;
+        margin: 2rem auto 0 auto !important;
+        transition: all .2s ease-in;
+    }
+
+    &.mensaje-ocultar {
+        visibility: hidden;
+        opacity: 0;
+        height: 0;
+        font-size: 1px;
+        margin: 0 auto !important;
+        transition: all .2s ease-out;
+    }
+}
+
+.button {
+    text-align: center;
+    margin-top: 3rem;
+    
+    .btn-setting {
+        padding: .5rem 2rem;
+        font-size: 1.7rem;
+        font-weight: bold;
+    }
+}
+
+.user {
+    border-collapse: collapse;
+    margin: 3rem auto;
+
+    th, td {
+        text-align: center;
+        color: white;
+        vertical-align: middle;
+        border: 1px solid white;
+    }
+
+    td {
+        padding: .5rem;
+    }
+
+    .eliminar,
+    .editar {
+        cursor: pointer;
+    }
+}

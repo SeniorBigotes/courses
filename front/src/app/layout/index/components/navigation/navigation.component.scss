@@ -1,0 +1,34 @@
+@use '../../../../../styles.scss' as m;
+
+.navigation {
+    background-color: m.$bg-navigation;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 3rem;
+
+    .nav-logo {
+        width: 10rem;
+        border-radius: 50%;
+    }
+
+    .nav-title {
+        color: m.$color-text-login;
+        text-transform: uppercase;
+    }
+
+    .line {
+        content: " ";
+        display: block;
+        height: 11rem;
+        width: 2px;
+        border-radius: 50%;
+        border: 1px solid m.$color-text-login;
+    }
+    
+    p {
+        color: m.$color-text-login;
+        font-size: 2.5rem;
+        text-transform: uppercase;
+    }
+}

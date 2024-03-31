@@ -1,0 +1,30 @@
+@use '../../../../../styles.scss' as m;
+
+.preview {
+    background-color: #fff;
+    border-radius: 1.5rem;
+    width: 55rem;
+    height: 73rem;
+    padding: 2rem 0;
+    display: grid;
+    justify-items: center;
+
+    .view {
+        display: block;
+        content: " ";
+        height: 30rem;
+        width: 50rem;
+        background-color: #000;
+        margin: auto;
+        margin-bottom: 3rem;
+    }
+
+    h3 {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    p {
+        width: 95%;
+    }
+}

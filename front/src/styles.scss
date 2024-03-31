@@ -1,0 +1,172 @@
+@import 'normalize.css';
+/*---------------------------------------VARIABLES---------------------------------------*/
+$font-family: 'Montserrat', sans-serif;
+$font-family: 'Open Sans', sans-serif;
+
+$border-search: rgb(197, 196, 196);
+$border-login: #2dc6fc;
+$bg-input-login: #291839;
+$bg-navigation: #291839;
+$bg-course: #d9d9d9;
+$bg-body: #1f2e45;
+$bg-degraded: linear-gradient(180deg, rgba(45, 200, 253, 1) 0%, rgba(27, 63, 153, 1) 100%);
+$bg-form: #eaeaea;
+$color-text-login: #afe7ff;
+$color-text-login-error: #d56cd6;
+$color-btn-login: #b40ab8;
+/*---------------------------------------MIXINS---------------------------------------*/
+
+$base-font-size: 2rem;
+
+@mixin phone {
+    @media(max-width: 767px) {
+        @content; //remplasa el contenido
+    }
+}
+
+@mixin tablet {
+    @media (min-width: 768px) and (max-width: 1023px) {
+        font-size: $base-font-size * 1.4; // Ajusta el tamaño de fuente para tablet (resoluciones estándar)
+        @content; // Remplaza el contenido
+    }
+}
+
+@mixin pc {
+    @media(min-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin pc-chico {
+    @media (min-width: 1024px) and (max-width: 1365px) {
+        font-size: $base-font-size * 1.8; // Ajusta el tamaño de fuente para pc-chico (resolución 720p)
+        @content; // Remplaza el contenido
+    }
+}
+
+@mixin pc-mediano {
+    @media (min-width: 1366px) and (max-width: 1920px) {
+        font-size: $base-font-size * 2.2; // Ajusta el tamaño de fuente para pc-mediano (resolución 1080p)
+        @content; // Remplaza el contenido
+    }
+}
+
+@mixin pc-grande {
+    @media (min-width: 1921px) and (max-width: 2560px) {
+        font-size: $base-font-size * 2.6; // Ajusta el tamaño de fuente para pc-grande
+        @content; // Remplaza el contenido
+    }
+}
+
+@mixin pc-extra {
+    @media (min-width: 2561px) {
+        font-size: $base-font-size * 3; // Ajusta el tamaño de fuente para pc-1920
+        @content; // Remplaza el contenido
+    }
+}
+
+@mixin cgrid($col, $med) {
+    display: grid;
+    grid-template-columns: repeat($col, 1fr);
+    gap: $med;
+}
+
+@mixin resetear-lista {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+@mixin line($bpx, $bc, $br, $w, $h) {
+    content: " ";
+    display: block;
+    border: $bpx solid $bc;
+    border-radius: $br;
+    width: $w;
+    height: $h;
+}
+
+@mixin fontFamily {
+    // <uniquifier>: Use a unique and descriptive class name
+    // <weight>: Use a value from 300 to 800
+    // <width>: Use a value from 75 to 100
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
+    font-variation-settings: "wdth";
+}
+
+/*---------------------------------------GLOBALES---------------------------------------*/
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-size: 1.6rem;
+    @include fontFamily;
+    background: $bg-body;
+}
+
+p {
+    font-size: 2rem;
+    color: black;
+}
+
+a {
+    text-decoration: none !important;
+    color: black !important;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin: 0 !important;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+h2 {
+    font-size: 3.6rem;
+}
+
+h3 {
+    font-size: 3rem;
+}
+
+//La etiqueta es ajustada para que soporte los cambios echos en el archivo HTML
+img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.container {
+    max-width: 140rem;
+    width: 95%;
+    margin: auto;
+    padding: 2rem 0;
+}
+
+.btn-pink {
+    background-color: $color-btn-login;
+    color: $color-text-login;
+    padding: 1rem 5rem;
+    font-size: 2.5rem;
+    transition: background-color .2s ease-in;
+
+    &:hover {
+        background-color: darken($color-btn-login, 7);
+    }
+}

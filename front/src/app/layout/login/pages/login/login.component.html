@@ -1,0 +1,23 @@
+<form class="login" [formGroup]="formGroup" (ngSubmit)="submit()">
+    <div class="login-box"></div>
+
+    <div class="login-user d-flex flex-column align-items-center justify-content-between">
+        <div class="login-logo">
+            <img src="assets/logo.jpg" alt="logo" class="logo">
+        </div>
+    
+        <div class="login-data-bg d-flex flex-column align-items-center justify-content-center">
+            <p>Ingrese su usuario y contraseña para iniciar sesión</p>
+            <div class="input d-flex flex-column align-items-center w-100 mt-5">
+                <input type="text" placeholder="Usuario" formControlName="userName">
+                <input class="mt-4" type="password" placeholder="Contraseña" formControlName="password">
+            </div>
+        </div>
+    
+        <button class="btn btn-pink">Ingresar</button>
+
+
+        <div class="error" [ngClass]="!error ? 'error-out' : 'error-in'"></div>
+        <p class="error-text" [ngClass]="!error ? 'error-out' : 'error-in'">*{{message}}*</p>
+    </div>
+</form>

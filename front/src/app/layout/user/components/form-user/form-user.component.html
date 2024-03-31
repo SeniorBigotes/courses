@@ -1,0 +1,71 @@
+<div>
+    <div class="header-users">
+        <h2 class="title text-center">
+            @if(usuarioID !== undefined && usuarioID > 0) {
+                Actualizar usuario
+            } @else {
+                Crear Usuario
+            }
+        </h2>
+
+        <button class="btn btn-pink btn-setting" (click)="verUsuarios()">Ver usuarios</button>
+
+    </div>
+
+    <form class="form d-flex flex-column align-items-center justify-content-center gap-4" 
+    [formGroup]="formUser" (ngSubmit)="submit()"
+    >
+        <div class="input">
+            <label for="name">Nombre/s: </label>
+            <input type="text" id="name" placeholder="Ej. Matias"
+            formControlName="nombres">
+        </div>
+        
+        <div class="input">
+            <label for="apellidoP">Apellido Paterno: </label>
+            <input type="text" id="apellidoP" placeholder="Ej. Morales"
+            formControlName="apellido_P">
+        </div>
+
+        <div class="input">
+            <label for="apellidoM">Apellido Materno: </label>
+            <input type="text" id="apellidoM" placeholder="Ej. Cantaro"
+            formControlName="apellido_M">
+        </div>
+
+        <div class="input">
+            <label for="userName">Nombre Usuario: </label>
+            <input type="text" id="userName" placeholder="Ej. Usuario1"
+            formControlName="nombre_U">
+        </div>
+      
+        <div class="input">
+            <label for="pass">Contraseña: </label>
+            <input type="password" id="pass" placeholder="Ej. @Papitos123"
+            formControlName="contraseña">
+        </div>
+
+        <div class="input">
+            <label for="rol">Rol: </label>
+            <select id="rol" formControlName="rol_id">
+                <option value="1">Administrador</option>
+                <option value="2">Docente</option>
+                <option value="3">Alumno</option>
+            </select>
+        </div>
+
+        <div class="btn-submit">
+            <button class="btn btn-pink btn-setting">
+                @if(usuarioID !== undefined && usuarioID > 0) {
+                    Actualizar
+                } @else {
+                    Crear
+                }
+            </button>
+        </div>
+
+        <p class="message" [ngClass]="mostrarMensaje ? 'show-message' : 'hidden-message'">
+            {{mensaje}}
+        </p>
+    </form>
+</div>

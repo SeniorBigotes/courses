@@ -1,0 +1,80 @@
+@use '../../../../../styles.scss' as m;
+
+
+.header-users {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 60rem;
+    margin: 3rem auto 1rem auto !important;
+    
+    .title {
+        text-transform: uppercase;
+        color: m.$border-login;
+        font-size: 3rem;
+    }
+
+    .btn-setting {
+        padding: .5rem 2rem;
+        font-size: 1.7rem;
+    }
+}
+
+.form {
+    background-color: m.$bg-form;
+    border-radius: 1rem;
+    width: 70rem;
+    margin: 0 auto;
+    padding: 2rem 0;
+
+    .input {
+        display: flex;
+        justify-content: space-between;
+        width: 50rem;
+
+        input,
+        select {
+            width: 35rem;
+            border-radius: 1rem;
+            border: none;
+            padding: .4rem;
+            font-size: 1.5rem;
+            background-color: white;
+        }
+
+        select {
+            text-align: center;
+        }
+    }
+
+    .btn-submit {
+        margin-top: 1rem;
+
+        .btn-setting {
+            padding: .5rem 2rem;
+            font-size: 1.7rem;
+            color: white;
+        }
+    }
+}
+
+.message {
+    text-align: center;
+    background: m.$bg-degraded;
+    color: white;
+    border-radius: .5rem;
+    padding: .3rem 2rem;
+    transition: all .3s ease-in-out;
+    
+    &.show-message {
+        opacity: 1;
+        visibility: visible;
+        transition: all .3s ease-in-out;
+    }
+    
+    &.hidden-message {
+        opacity: 0;
+        visibility: hidden;
+        transition: all .3s ease-in-out;
+    }
+}
