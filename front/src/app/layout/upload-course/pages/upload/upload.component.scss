@@ -4,6 +4,10 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    height: 90vh;
-    padding-top: 25rem;
+    height: 85vh;
+    margin-top: 5rem;
+
+    @include m.pc-mediano {
+        margin: 0;
+    }
 }

@@ -4,10 +4,16 @@
     background-color: #fff;
     border-radius: 1.5rem;
     width: 55rem;
-    height: 73rem;
+    height: auto;
     padding: 2rem 0;
-    display: grid;
-    justify-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    @include m.pc-mediano {
+        height: 65rem;
+    }
 
     .view {
         display: block;
@@ -15,16 +21,29 @@
         height: 30rem;
         width: 50rem;
         background-color: #000;
-        margin: auto;
-        margin-bottom: 3rem;
+        margin: 0 auto 2rem auto;
     }
 
-    h3 {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    p {
+    .text {
         width: 95%;
+        text-align: center;
+        
+        .descripcion {
+            width: 95%;
+            height: auto;
+            max-height: 12rem;
+            overflow: auto;
+            text-align: justify;
+    
+            @include m.pc-mediano {
+                max-height: 25rem;
+                font-size: 1.8rem;
+            }
+        }
+
+        .descripcion-none {
+            text-align: center;
+        }
     }
+
 }

@@ -1,10 +1,10 @@
 <form class="form d-flex flex-column justify-content-around align-items-center gap-5">
     <h2>Subir curso</h2>
 
-    <input class="" type="text" placeholder="Titulo">
+    <input class="" type="text" maxlength="65" placeholder="Título" (input)="cambiosTitulo($event)">
 
     <select name="materias">
-        <option value="">Materia</option>
+        <option value="">Enfoque</option>
         <option value="matematicas">Matemáticas</option>
         <option value="espanol">Español</option>
         <option value="ciencias">Ciencias</option>
@@ -22,7 +22,7 @@
         <input class="input-file" type="file" id="upload">
     </div>
     
-    <textarea placeholder="Descripción del video"></textarea>
+    <textarea placeholder="Descripción del video" (input)="cambiosDescripcion($event)"></textarea>
     
     <button class="btn btn-pink">Publicar</button>
 </form>

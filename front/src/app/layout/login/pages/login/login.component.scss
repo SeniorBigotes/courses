@@ -5,12 +5,8 @@
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    height: 120vh;
+    height: 100vh;
     position: relative;
-    
-    @include m.tablet {
-        height: 100vh;
-    }
 
     .login-box {
         position: absolute;
@@ -32,8 +28,12 @@
         top: 40%;
         left: 50%;
         transform: translate(-50%, -50%);
-        height: 70rem;
+        height: 57rem;
         width: 45%;
+
+        @include m.pc-mediano {
+            height: 70rem;
+        }
 
         .logo {
             width: 22rem;

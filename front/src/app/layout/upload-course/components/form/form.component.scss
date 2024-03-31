@@ -4,7 +4,12 @@
     background-color: m.$bg-navigation;
     border-radius: 1.5rem;
     width: 55rem;
-    padding: 7rem 0;
+    height: 55rem;
+    padding: 4rem 0;
+
+    @include m.pc-mediano { 
+        height: 65rem;
+    }
 
     .div-file {
         margin: 0 auto;

@@ -19,40 +19,34 @@ $color-btn-login: #b40ab8;
 $base-font-size: 2rem;
 
 @mixin phone {
-    @media(max-width: 767px) {
+    @media only screen and (max-width: 767px) {
         @content; //remplasa el contenido
     }
 }
 
 @mixin tablet {
-    @media (min-width: 768px) and (max-width: 1023px) {
+    @media only screen and (min-width: 768px) and (max-width: 1023px) {
         font-size: $base-font-size * 1.4; // Ajusta el tamaño de fuente para tablet (resoluciones estándar)
         @content; // Remplaza el contenido
     }
 }
 
-@mixin pc {
-    @media(min-width: 1024px) {
-        @content;
-    }
-}
-
 @mixin pc-chico {
-    @media (min-width: 1024px) and (max-width: 1365px) {
+    @media only screen and (min-width: 1024px) and (max-width: 1367px) {
         font-size: $base-font-size * 1.8; // Ajusta el tamaño de fuente para pc-chico (resolución 720p)
         @content; // Remplaza el contenido
     }
 }
 
 @mixin pc-mediano {
-    @media (min-width: 1366px) and (max-width: 1920px) {
+    @media only screen and (min-width: 1368px) and (max-width: 1920px) {
         font-size: $base-font-size * 2.2; // Ajusta el tamaño de fuente para pc-mediano (resolución 1080p)
         @content; // Remplaza el contenido
     }
 }
 
 @mixin pc-grande {
-    @media (min-width: 1921px) and (max-width: 2560px) {
+    @media only screen and (min-width: 1921px) and (max-width: 2560px) {
         font-size: $base-font-size * 2.6; // Ajusta el tamaño de fuente para pc-grande
         @content; // Remplaza el contenido
     }
