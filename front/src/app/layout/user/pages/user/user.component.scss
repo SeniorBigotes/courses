@@ -6,16 +6,32 @@
     justify-content: center;
     margin-top: 2rem;
 
-    input {
-        font-size: 1.5rem;
-        border-radius: 1rem;
-        padding: .5rem;
-        width: 40rem;
+    .input {
+        display: flex;
+        align-items: center;
 
-        &::placeholder {
-            font-style: italic;
+        input {
+            font-size: 1.5rem;
+            border-radius: 1rem 0 0 1rem ;
+            padding: .5rem;
+            width: 40rem;
+    
+            &::placeholder {
+                font-style: italic;
+            }
+        }
+    
+        .btn-search {
+            border-radius: 0 1rem 1rem 0;
+            background-color: m.$border-search;
+            padding: .35rem;
+
+            &:hover {
+                background-color: lighten(m.$border-search, 20);
+            }
         }
     }
+
 }
 
 .mensaje {
@@ -68,7 +84,7 @@
     }
 
     td {
-        padding: .5rem;
+        padding: .5rem 1rem;
     }
 
     .eliminar,

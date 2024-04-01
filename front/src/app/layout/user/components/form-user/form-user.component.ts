@@ -19,6 +19,7 @@ export class FormUserComponent implements OnInit {
   mensaje: string = '';
   usuario?: any;
   usuarioID: number | undefined = this.userService.usuarioID;
+  error: string = '';
 
   constructor(private fb: FormBuilder,
               private appService: AppService,
@@ -55,20 +56,26 @@ export class FormUserComponent implements OnInit {
     this.usuarioID ? 
     // actualizar usuario
       this.appService.putUsuario(this.usuarioID, body).
-        subscribe(() => this.crearMensaje('Usuario actualizado con éxito'))
+        subscribe(() => this.crearMensaje('Usuario actualizado con éxito', true))
     :
     // crear usuario
+    this.formUser.valid ? 
       this.appService.
-        postCrearUsuario(body).subscribe(() => this.crearMensaje('Usuario creado con éxito'));
+        postCrearUsuario(body).subscribe({
+          next: () => this.crearMensaje('Usuario creado con éxito', true),
+          error: err => this.crearMensaje('Nombre de usuario ya existente, escoja otro', false)
+        })
+    :
+      this.crearMensaje('Faltan campos por llenar', false);
   }
 
-  private crearMensaje(mensaje: string): void {
+  private crearMensaje(mensaje: string, redirigir: boolean): void {
     this.mostrarMensaje = true;
     this.mensaje = mensaje;
     setTimeout(() => {
       this.mostrarMensaje = false;
       this.mensaje = ''
-      this.router.navigate(['/users']);
+      if(redirigir) this.router.navigate(['/users']);
     }, 1000);
   }
 
@@ -77,7 +84,7 @@ export class FormUserComponent implements OnInit {
     return this.fb.group({
       nombres: ['', Validators.required],
       apellido_P: ['', Validators.required],
-      apellido_M: ['', Validators.required],
+      apellido_M: [''],
       nombre_U: ['', Validators.required],
       contraseña: ['', Validators.required],
       rol_id: ['', Validators.required],

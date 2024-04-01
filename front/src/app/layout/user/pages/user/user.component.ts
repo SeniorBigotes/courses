@@ -37,12 +37,19 @@ export class UserComponent implements OnInit {
     });
   }
 
+  // busca usuarios
+  search(): void {
+    const input = (document.querySelector('#input') as HTMLInputElement).value;
+    console.log(input)
+  }
+
   // redireccinar al formulario para crear usuarios
   onClick(): void {
     this.userService.usuarioID = undefined;
     this.router.navigate(['/users/create'])
   }
   
+  // redireccionar para editar usuarios
   editarUsuario(usuarioID: number): void {
     this.userService.usuarioID = usuarioID;
     this.router.navigate(['/users/update']);
