@@ -9,10 +9,10 @@
     .input {
         display: flex;
         align-items: center;
+        justify-content: center;
 
         input {
             font-size: 1.5rem;
-            border-radius: 1rem 0 0 1rem ;
             padding: .5rem;
             width: 40rem;
     
@@ -23,6 +23,16 @@
     
         .btn-search {
             border-radius: 0 1rem 1rem 0;
+            background-color: m.$border-search;
+            padding: .35rem;
+
+            &:hover {
+                background-color: lighten(m.$border-search, 20);
+            }
+        }
+
+        .btn-clean {
+            border-radius: 1rem 0 0 1rem;
             background-color: m.$border-search;
             padding: .35rem;
 
@@ -86,6 +96,36 @@
     td {
         padding: .5rem 1rem;
     }
+
+    th {
+        cursor: pointer;
+        text-transform: uppercase;
+        min-width: 15rem;
+        max-width: 20rem;
+
+        div {
+            position: relative;
+
+            .row {
+                position: absolute;
+                padding: 0;
+                right: 1rem;
+                top: .3rem;
+            }
+
+            .row-up {
+                transform: rotate(360deg);
+                transition: transform .2s ease;
+            }
+            
+            .row-down {
+                // transform: rotate(900deg);
+                transform: rotate(180deg);
+                transition: transform .2s ease;
+            }
+        }
+    }
+
 
     .eliminar,
     .editar {

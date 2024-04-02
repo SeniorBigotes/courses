@@ -72,6 +72,26 @@ function obtenerUsuarioPorUsername(req, res) {
     });
 }
 
+// buscar usuarios por nombre, apellido_P o apellido_M
+function buscarUsuarios(req, res) {
+    const buscar = req.params.buscar;
+
+    connection.query(`
+    SELECT * FROM usuarios WHERE CONCAT(nombres, ' ', apellido_P, ' ', apellido_M) LIKE '%${buscar}%';
+    `, (error, result) => {
+        if(error) {
+            console.error('Error al buscar el usuario');
+            response.status(500).json({error: 'Error al buscar el usuario'});
+        } else {
+            if(result.length > 0) {
+                res.status(200).json(result);
+            } else {
+                res.status(404).json({message: 'Usuario no existente'});
+            }
+        }
+    })
+}
+
 // Operación CRUD: Actualizar un usuario por su ID
 function actualizarUsuario(req, res) {
     const idUsuario = req.params.id;
@@ -115,6 +135,7 @@ module.exports = {
     obtenerUsuarios,
     obtenerUsuarioPorId,
     obtenerUsuarioPorUsername,
+    buscarUsuarios,
     actualizarUsuario,
     eliminarUsuario
 };
