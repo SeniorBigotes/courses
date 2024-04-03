@@ -59,9 +59,15 @@
             }
         }
 
-        .btn-pink {
-            width: 80%;
-            margin: 4rem auto;
+        
+        .botones {
+            width: 85%;
+            margin: 0 auto;
+            
+            .btn-pink {
+                width: 100%;
+                margin: 1rem auto;
+            }
         }
     }
 }

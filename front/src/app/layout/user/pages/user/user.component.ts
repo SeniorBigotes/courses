@@ -27,11 +27,16 @@ export class UserComponent implements OnInit {
   ascDescUsername: boolean = true; // orden ascendente o descendente por username
   ascDescRol: boolean = true; // orden ascendente o descendente por rol
 
+  userRol: string | null = localStorage.getItem('rol');
+
   constructor(private appService: AppService,
               private userService: UserService,
               private router: Router) { }
 
   ngOnInit(): void {
+    // verificar rol
+    if(!(this.userRol === 'Administrador')) this.router.navigate(['/']);
+    
     // obtener a todos los usuarios
     this.appService.getUsuarios().subscribe(usuarios => {
       this.usuarios = usuarios;

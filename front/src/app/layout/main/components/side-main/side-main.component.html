@@ -4,8 +4,10 @@
             <img class="img" src="assets/user.jpeg" alt="Foto Perfil">
 
             <div>
-                <p class="username">Usuario</p>
-                <p class="mail">{{text}}</p>
+                <p class="username">{{username}}</p>
+                @for(user of usuario; track user) {
+                    <p class="mail">{{user.nombres}} <span class="d-block">{{user.apellido_P}} {{user.apellido_M}}</span></p>
+                }
             </div>
         </div>
 
@@ -17,7 +19,14 @@
                 <li><a routerLink="">Cursos por materia</a></li>
             </ul>
 
-            <button class="btn btn-pink">Subir curso</button>
+            <div class="botones">
+                @if(userRol === 'Administrador') {
+                    <button class="btn btn-pink" routerLink="/users">Ver usuarios</button>
+                }
+                @if(userRol === 'Administrador' || userRol === 'Docente') {
+                    <button class="btn btn-pink" routerLink="/upload">Subir curso</button>
+                }
+            </div>
         </div>
     </div>
 </aside>

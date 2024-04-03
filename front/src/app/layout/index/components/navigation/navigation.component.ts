@@ -21,4 +21,8 @@ export class NavigationComponent implements OnInit {
     if(localStorage.length === 0) this.router.navigate(['/login']);
   }
 
+  logout(): void {
+    this.router.navigate(['/login']);
+  }
+
 }
