@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, of } from 'rxjs';
+import { AppService } from '../../app.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class UploadService {
   setTituloVideo(titulo: string): void {
     this.tituloVideo.next(titulo);
   }
-
+  
+  // ingresar el titulo del video
   setDescripcionVideo(descripcion: string): void {
     this.descripcionVideo.next(descripcion);
   }

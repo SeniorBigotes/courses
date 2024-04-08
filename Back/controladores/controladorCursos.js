@@ -1,24 +1,59 @@
 // En controladorCursos.js
+const { nombreUnico, generarNombre } = require('../ayuda/multer');
 const connection = require('../conexionSQL');
+
+const fs = require('fs'); // sistema de archivos
+const path = require('path'); // manejo de rutas de archivos
+
 
 // Operación CRUD: Crear un nuevo curso
 function crearCurso(req, res) {
-    const { nombre_C, duracion, descripcion } = req.body;
+    console.log(`files\n`, req.files);
+    console.log(`body\n`, req.body);
+    
+    const { tema, titulo, descripcion, usuarioID, username } = req.body;
+    const nombreMiniatura = generarNombre();
 
-    const nuevoCurso = {
-        nombre_C,
-        duracion,
-        descripcion
-    };
+    const insertCursos = `insert into cursos (titulo, descripcion, duracion, miniatura, miniatrua_url, tema, usuario_id)
+                        values ('${titulo}', '${descripcion}', 12, '${nombreMiniatura}', './sin_ruta', '${tema}', ${usuarioID})`;
 
-    connection.query('INSERT INTO cursos SET ?', nuevoCurso, (error, result) => {
-        if (error) {
-            console.error('Error al crear curso: ', error);
-            res.status(500).json({ error: 'Error al crear curso' });
-        } else {
-            res.status(201).json({ mensaje: 'Curso creado correctamente' });
-        }
-    });
+    const insertarLecciones = `insert into lecciones (titulo, alias, ubicacion, curso_id) 
+                        values ('leccion1', '${nombreUnico}', './sin_ubicacion', 1)`;
+
+    // connection.query('select titulo from cursos where id = 1', (error, result) => {
+    //     if (error) {
+    //         console.error('Error al crear curso: ', error);
+    //         res.status(500).json({ error: 'Error al crear curso' });
+    //     } else {
+    //         res.status(201).json({ mensaje: 'Curso creado correctamente' });
+    //         console.log(`Curso creado correctamente\n`)
+
+    //         connection.query('select titulo from lecciones where id = 1', (error, result) => {
+    //             if(error) {
+    //                 console.error('Error al crear la leccion: ', error);
+    //                 res.status(500).json({ error: 'Error al crear la leccion' });
+    //             } else {
+    //                 console.log(`Leccion creada correctamente\n`)
+    //                 res.status(201).json({ mensaje: 'Leccion creada correctamente' });
+    //             }   
+    //         })
+    //     }
+    // });
+}
+
+// proceso completo de almacenar miniatura
+async function miniatura(nombre, username) {
+    const miniaturaNombre = nombre;
+    const rutaCarpeta = path.join(__dirname, `../public/${username}`);
+    await verificarCarpetas(rutaCarpeta);
+}
+
+function insertarCurso() {
+
+}
+
+function insertarLeccion() {
+
 }
 
 // Operación CRUD: Leer todos los cursos

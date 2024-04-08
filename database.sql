@@ -3,24 +3,15 @@ CREATE DATABASE db_escuela_ide;
 USE db_escuela_ide;
 
 /*CREAR LAS TABLAS*/
-#CURSOS
-#por actualizar
-CREATE TABLE cursos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    descripcion TEXT,
-    duracion INT NOT NULL
-);
-
 #ROLES
 CREATE TABLE roles (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY UNIQUE,
     nombre VARCHAR(20) NOT NULL
 );
 
 #USUARIOS
 CREATE TABLE usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY UNIQUE,
     nombres VARCHAR(255) NOT NULL,
     apellido_P VARCHAR(255) NOT NULL,
     apellido_M VARCHAR(255) NOT NULL,
@@ -30,20 +21,34 @@ CREATE TABLE usuarios (
     FOREIGN KEY (rol_id) REFERENCES roles(id)
 );
 
+#CURSOS
+CREATE TABLE cursos (
+    id INT AUTO_INCREMENT PRIMARY KEY UNIQUE,
+    titulo VARCHAR(70) NOT NULL,
+    descripcion TEXT,
+    duracion INT NOT NULL,
+    miniatura TEXT NOT NULL,
+    miniatura_url TEXT NOT NULL,
+    tema TEXT NOT NULL,
+    usuario_id INT NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios
+);
+
 #LECCIONES
 CREATE TABLE lecciones (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY UNIQUE,
     titulo VARCHAR(255) NOT NULL,
-    descripcion TEXT,
+    alias VARCHAR(255) NOT NULL UNIQUE,
     ubicacion TEXT,
     miniatura TEXT,
+    miniatura_url TEXT,
     curso_id INT,
     FOREIGN KEY (curso_id) REFERENCES cursos(id)
 );
 
 #PROGESO DE LOS USUARIOS
 CREATE TABLE progreso_usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY UNIQUE,
     usuario_id INT,
     curso_id INT,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),

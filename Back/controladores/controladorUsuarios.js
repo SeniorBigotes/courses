@@ -58,7 +58,7 @@ function obtenerUsuarioPorId(req, res) {
 function obtenerUsuarioPorUsername(req, res) {
     const username = req.params.username;
 
-    connection.query('SELECT nombre_U, contraseña, rol_id FROM usuarios WHERE nombre_U = ?', username, (error, result) => {
+    connection.query('SELECT id, nombre_U, contraseña, rol_id FROM usuarios WHERE nombre_U = ?', username, (error, result) => {
         if(error) {
             console.error('Error al obtener usuario');
             res.status(500).json({error: 'Error al obtener usuario'});

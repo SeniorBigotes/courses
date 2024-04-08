@@ -7,9 +7,10 @@ export class LoginService {
 
   constructor() { }
 
-  almacenarUsuario(username: string, rol: string): void {
+  almacenarUsuario(username: string, rol: string, id: number): void {
     localStorage.setItem('username', username);
     localStorage.setItem('rol', rol);
+    localStorage.setItem('id', id.toString());
   }
 
   obtenerUsername(): string | null {
@@ -18,6 +19,10 @@ export class LoginService {
 
   obtenerRol(): string | null {
     return localStorage.getItem('rol');
+  }
+
+  obtenerID(): string | null {
+    return localStorage.getItem('id');
   }
 
   cerrarSesion(): void {

@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
         next: usuario => {
           if (usuario.nombre_U === userName && usuario.contraseña === password) {
             this.appService.getRol(usuario.rol_id).subscribe(rol => {
-              this.loginService.almacenarUsuario(usuario.nombre_U, rol.nombre);
+              this.loginService.almacenarUsuario(usuario.nombre_U, rol.nombre, usuario.id);
               this.router.navigate(['/']);
             });
           } else {

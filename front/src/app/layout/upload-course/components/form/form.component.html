@@ -1,10 +1,11 @@
-<form class="form d-flex flex-column justify-content-around align-items-center gap-5">
+<form class="form d-flex flex-column justify-content-around align-items-center gap-5"
+[formGroup]="formFormulario" (ngSubmit)="enviar()">
     <h2>Subir curso</h2>
 
-    <input class="" type="text" maxlength="65" placeholder="Título" (input)="cambiosTitulo($event)">
+    <input class="" type="text" maxlength="65" placeholder="Título" formControlName="titulo" (input)="cambiosTitulo($event)">
 
-    <select name="materias">
-        <option value="">Enfoque</option>
+    <select name="temas" formControlName="tema">
+        <option value="">Tema</option>
         <option value="matematicas">Matemáticas</option>
         <option value="espanol">Español</option>
         <option value="ciencias">Ciencias</option>
@@ -18,11 +19,16 @@
     </select>
     
     <div class="div-file">
-        <label class="label-file" for="upload">Cargar Video</label>
-        <input class="input-file" type="file" id="upload">
+        <label class="label-file" for="curso">Cargar Curso</label>
+        <input class="input-file" type="file" id="curso" (change)="agregarCurso($event)">
     </div>
     
-    <textarea placeholder="Descripción del video" (input)="cambiosDescripcion($event)"></textarea>
+    <div class="div-file">
+        <label class="label-file" for="mini">Imagen del curso</label>
+        <input class="input-file" type="file" id="mini" (change)="agregarMiniatura($event)">
+    </div>
+    
+    <textarea placeholder="Descripción del video" formControlName="descripcion" (input)="cambiosDescripcion($event)"></textarea>
     
     <button class="btn btn-pink">Publicar</button>
 </form>

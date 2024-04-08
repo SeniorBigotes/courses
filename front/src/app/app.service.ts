@@ -9,6 +9,7 @@ export class AppService {
 
   private usuariosUrl: string = 'http://localhost:3000/api/usuarios/';
   private rolesUrl: string = 'http://localhost:3000/api/roles/';
+  private cursosUrl: string = 'http://localhost:3000/api/cursos';
 
   constructor(private http: HttpClient) { }
 
@@ -38,5 +39,9 @@ export class AppService {
 
   deleteUsuario(usuarioID: number): Observable<any> {
     return this.http.delete(`${this.usuariosUrl}/${usuarioID}`);
+  }
+
+  postCursos(body: any): Observable<any> {
+    return this.http.post(this.cursosUrl, body);
   }
 }
