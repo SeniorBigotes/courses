@@ -1,5 +1,5 @@
 <form class="form d-flex flex-column justify-content-around align-items-center gap-5"
-[formGroup]="formFormulario" (ngSubmit)="enviar()">
+[formGroup]="formFormulario" (ngSubmit)="enviar($event)">
     <h2>Subir curso</h2>
 
     <input class="" type="text" maxlength="65" placeholder="Título" formControlName="titulo" (input)="cambiosTitulo($event)">

@@ -1,59 +1,55 @@
 // En controladorCursos.js
-const { nombreUnico, generarNombre } = require('../ayuda/multer');
+const { almacenarArchivos } = require('../ayuda/helpers');
+const { miniaturas, cursos } = require('../ayuda/multer');
 const connection = require('../conexionSQL');
 
-const fs = require('fs'); // sistema de archivos
-const path = require('path'); // manejo de rutas de archivos
-
-
 // Operación CRUD: Crear un nuevo curso
-function crearCurso(req, res) {
-    console.log(`files\n`, req.files);
-    console.log(`body\n`, req.body);
+async function crearCurso(req, res) {
+    // console.log(`files\n`, req.files);
+    // console.log(`body\n`, req.body);
+
+    // console.log('miniaturas', miniaturas);
+    // console.log('cursos', cursos);
     
     const { tema, titulo, descripcion, usuarioID, username } = req.body;
-    const nombreMiniatura = generarNombre();
+    const miniaturasRuta = `public/${usuarioID}/miniaturas`;
+    const cursosRuta = `public/${usuarioID}/cursos`;
+    const rutaOrigen = 'public/upload';
 
+    const miniAlmacenadas = await almacearMiniaturas(miniaturas, rutaOrigen, miniaturasRuta);
+    const cursosAlmacenados = await almacenarCursos(cursos, rutaOrigen, cursosRuta);
+    
+    console.log(cursosAlmacenados[0]);
+    console.log(miniAlmacenadas[0]);
+
+    /*
     const insertCursos = `insert into cursos (titulo, descripcion, duracion, miniatura, miniatrua_url, tema, usuario_id)
                         values ('${titulo}', '${descripcion}', 12, '${nombreMiniatura}', './sin_ruta', '${tema}', ${usuarioID})`;
 
     const insertarLecciones = `insert into lecciones (titulo, alias, ubicacion, curso_id) 
-                        values ('leccion1', '${nombreUnico}', './sin_ubicacion', 1)`;
+                        values ('leccion1', '${''}', './sin_ubicacion', 1)`;
 
-    // connection.query('select titulo from cursos where id = 1', (error, result) => {
-    //     if (error) {
-    //         console.error('Error al crear curso: ', error);
-    //         res.status(500).json({ error: 'Error al crear curso' });
-    //     } else {
-    //         res.status(201).json({ mensaje: 'Curso creado correctamente' });
-    //         console.log(`Curso creado correctamente\n`)
+    connection.query('select titulo from cursos where id = 1', (error, result) => {
+        if (error) {
+            console.error('Error al crear curso: ', error);
+            res.status(500).json({ error: 'Error al crear curso' });
+        } else {
 
-    //         connection.query('select titulo from lecciones where id = 1', (error, result) => {
-    //             if(error) {
-    //                 console.error('Error al crear la leccion: ', error);
-    //                 res.status(500).json({ error: 'Error al crear la leccion' });
-    //             } else {
-    //                 console.log(`Leccion creada correctamente\n`)
-    //                 res.status(201).json({ mensaje: 'Leccion creada correctamente' });
-    //             }   
-    //         })
-    //     }
-    // });
+            res.status(201).json({ mensaje: 'Curso creado correctamente' });
+            console.log(`Curso creado correctamente\n`);
+        }
+    });
+    */
 }
 
-// proceso completo de almacenar miniatura
-async function miniatura(nombre, username) {
-    const miniaturaNombre = nombre;
-    const rutaCarpeta = path.join(__dirname, `../public/${username}`);
-    await verificarCarpetas(rutaCarpeta);
+async function almacenarCursos(cursos, rutaOrigen, rutaDestino) {
+    const promesas = cursos.map(curso => almacenarArchivos(curso, rutaOrigen, rutaDestino));
+    return await Promise.all(promesas); // esperar a que se cumplan todas las promesas
 }
 
-function insertarCurso() {
-
-}
-
-function insertarLeccion() {
-
+async function almacearMiniaturas(miniaturas, rutaOrigen, rutaDestino) {
+    const promesas =  miniaturas.map(miniatura => almacenarArchivos(miniatura, rutaOrigen, rutaDestino));
+    return await Promise.all(promesas);
 }
 
 // Operación CRUD: Leer todos los cursos

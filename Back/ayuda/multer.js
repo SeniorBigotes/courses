@@ -1,30 +1,30 @@
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid'); // genera nombre de archivo unico
-const { descomprimir } = require('./helpers');
-
-const nombreUnico = generarNombre(); // generar nombre de archivo unico
 
 const storage = multer.diskStorage({
-    filename: (res, file, callback) => { // nombre del archivo
-        console.log('multer', file)
+    filename: (req, file, callback) => { // nombre del archivo
         const extension = file.originalname.split('.').pop(); // obtener la extension del archivo
-        if(extension === '.zip') {
-            descomprimir('../public/files_zip');
-        }
-        const nombreArchivo = nombreUnico
+        const nombreArchivo = generarNombre(); // generar nombre unico
+
+        extension === 'zip' ?
+            cursos.push(`${nombreArchivo}.${extension}`) :
+            miniaturas.push(`${nombreArchivo}.${extension}`);
+        
         callback(null, `${nombreArchivo}.${extension}`);
     },
-    destination: (res, file, callback) => { // donde se va a almacenar
-        callback(null, './public');
-    }
+    destination: (req, file, callback) => callback(null, './public/upload'), // donde se va a almacenar
 });
 
-function generarNombre() {
+function generarNombre() { 
     return `${uuidv4()}`;
 }
 
+let miniaturas = [];
+let cursos = [];
+
 module.exports = {
     storage,
-    nombreUnico,
     generarNombre,
+    miniaturas,
+    cursos,
 }

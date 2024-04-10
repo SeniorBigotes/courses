@@ -52,11 +52,11 @@ export class FormComponent {
     return bodyArchivo;
   }
 
-  enviar(): void {
-    this.enviarFormulario();
+  enviar($event: any): void {
+    this.enviarFormulario($event);
   }
 
-  enviarFormulario(): void {
+  enviarFormulario($event: any): void {
     // convertir a formData cuando se envien datos de tipo binario (archivos)
     const body = new FormData();
     
@@ -64,7 +64,12 @@ export class FormComponent {
     
     if(username) {
       this.crearCuerpoArchivos(body);
-      this.appService.postCursos(body).subscribe(data => console.log(data));
+      this.appService.postCursos(body).subscribe({
+        complete: () => {
+          $event.preventDefault();
+          this.formFormulario.reset();
+        }
+      });
     }
   }
 
