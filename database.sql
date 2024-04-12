@@ -37,11 +37,8 @@ CREATE TABLE cursos (
 #LECCIONES
 CREATE TABLE lecciones (
     id INT AUTO_INCREMENT PRIMARY KEY UNIQUE,
-    titulo VARCHAR(255) NOT NULL,
-    alias VARCHAR(255) NOT NULL UNIQUE,
+    nombre VARCHAR(255) NOT NULL,
     ubicacion TEXT,
-    miniatura TEXT,
-    miniatura_url TEXT,
     curso_id INT,
     FOREIGN KEY (curso_id) REFERENCES cursos(id)
 );

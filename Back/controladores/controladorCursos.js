@@ -1,45 +1,56 @@
 // En controladorCursos.js
-const { almacenarArchivos } = require('../ayuda/helpers');
+const { almacenarArchivos, leerArchivosZip } = require('../ayuda/helpers');
 const { miniaturas, cursos } = require('../ayuda/multer');
 const connection = require('../conexionSQL');
 
 // Operación CRUD: Crear un nuevo curso
 async function crearCurso(req, res) {
+    const { tema, titulo, descripcion, usuarioID } = req.body;
+
     // console.log(`files\n`, req.files);
     // console.log(`body\n`, req.body);
 
     // console.log('miniaturas', miniaturas);
     // console.log('cursos', cursos);
     
-    const { tema, titulo, descripcion, usuarioID, username } = req.body;
     const miniaturasRuta = `public/${usuarioID}/miniaturas`;
     const cursosRuta = `public/${usuarioID}/cursos`;
     const rutaOrigen = 'public/upload';
 
+    const contenidoArchivosZip = await leerArchivosZip(`${rutaOrigen}/${cursos}`, cursosRuta);
     const miniAlmacenadas = await almacearMiniaturas(miniaturas, rutaOrigen, miniaturasRuta);
     const cursosAlmacenados = await almacenarCursos(cursos, rutaOrigen, cursosRuta);
     
-    console.log(cursosAlmacenados[0]);
-    console.log(miniAlmacenadas[0]);
+    // console.log('cursos:', cursosAlmacenados[0]);
+    // console.log('miniaturas:', miniAlmacenadas[0][1]);
+    // console.log('contenido:', contenidoArchivosZip);
+    
+    if(cursosAlmacenados[0] && miniAlmacenadas[0]) {
+        const duracion = contenidoArchivosZip.length;
+        const miniatura = req.files.miniatura.filename;
+        const miniatura_url = miniAlmacenadas[0][1]
+        
+        const insertCursos = `insert into 
+        cursos (titulo, descripcion, duracion, miniatura, miniatura_url, tema, usuario_id)
+        values ('${titulo}', '${descripcion}', ${duracion}, '${miniatura}', '${miniatura_url}', '${tema}', ${usuarioID})`;
+    
+        const seleccion = 'select * from usuarios'
 
-    /*
-    const insertCursos = `insert into cursos (titulo, descripcion, duracion, miniatura, miniatrua_url, tema, usuario_id)
-                        values ('${titulo}', '${descripcion}', 12, '${nombreMiniatura}', './sin_ruta', '${tema}', ${usuarioID})`;
-
-    const insertarLecciones = `insert into lecciones (titulo, alias, ubicacion, curso_id) 
-                        values ('leccion1', '${''}', './sin_ubicacion', 1)`;
-
-    connection.query('select titulo from cursos where id = 1', (error, result) => {
-        if (error) {
-            console.error('Error al crear curso: ', error);
-            res.status(500).json({ error: 'Error al crear curso' });
-        } else {
-
-            res.status(201).json({ mensaje: 'Curso creado correctamente' });
-            console.log(`Curso creado correctamente\n`);
-        }
-    });
-    */
+        connection.query(insertCursos, (err, result) => {
+            if(err) {
+                console.log('Error al subir a la base de datos');
+            } else {
+                const curso_id = result.insertId;
+                contenidoArchivosZip.forEach(contenido => {
+                    const insertLecciones = `insert into lecciones (nombre, ubicacion, curso_id) 
+                                            values ('${contenido.nombre}', '${contenido.ruta}', ${curso_id})`;
+                    connection.query(insertLecciones, (err, result) => {
+                        if(err) console.log('Error al insertar:', err)
+                    });
+                });
+            }
+        });
+    }
 }
 
 async function almacenarCursos(cursos, rutaOrigen, rutaDestino) {

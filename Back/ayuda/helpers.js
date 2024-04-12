@@ -1,34 +1,47 @@
 const AdmZip = require('adm-zip');
 const fs = require('fs'); // modificacion de archivos del sistema
 
+// leer contenido de carpeta comprimida
+async function leerArchivosZip(rutaOrigen, rutaDestino) {
+
+    let contenidoCurso = [];
+    try {
+        const zip = new AdmZip(rutaOrigen);
+        const zipContenido = zip.getEntries();
+
+        zipContenido.forEach(entry => {
+            const datos = {
+                ruta: `${rutaDestino}/${entry.entryName}`,
+                nombre: entry.name
+            }
+            contenidoCurso.push(datos);
+        });
+        return contenidoCurso;
+    } catch(error) {
+        console.error('Error al leer archivos:', error);
+        return null;
+    }
+}
+
 // verificar si existe la carpeta
 async function almacenarArchivos(nombreArchivo, rutaOrigen, rutaDestino) {
-    let extraccion, renombrar, eliminar;
+    let rehubicar = [];
     const extension = nombreArchivo.split('.').pop();
     const rutaArchivoOrigen = `${rutaOrigen}/${nombreArchivo}`;
     const rutaExistente = await crearVerificarCarpetas(rutaDestino);
     
     if(rutaExistente) {
-        if(extension === 'zip' || extension === 'rar' || extension === '.7z') {
-            extraccion = await descomprimir(rutaOrigen, rutaDestino, nombreArchivo);
-        } else {
-            renombrar = await renombrarRehubicar(rutaArchivoOrigen, rutaDestino, 5);
-        }
-        /*
-        extension == 'zip' || extension === 'rar' || extension === '.7z' ? 
-        extraccion = await descomprimir(rutaOrigen, rutaDestino) :
-        renombrar = await renombrarRehubicar(rutaOrigen, rutaDestino, 5)
-        */
+        extension === 'zip' || extension === 'rar' || extension === '7z' ? 
+            rehubicar = await descomprimir(rutaArchivoOrigen, rutaDestino, nombreArchivo) :
+            rehubicar = await renombrarRehubicar(rutaArchivoOrigen, rutaDestino, 5);
 
-        extraccion = true;
-        renombrar = true;
         eliminar = await eliminarArchivos(rutaArchivoOrigen);
     }
 
-    if(rutaExistente && extraccion && renombrar) {
-        return true;
+    if(rutaExistente && rehubicar[0]) {
+        return rehubicar;
     } else {
-        return false;
+        return [false];
     }
 }
 
@@ -50,33 +63,29 @@ async function crearVerificarCarpetas(rutaCarpeta) {
 
 // descomprimir archivos
 async function descomprimir(rutaOrigen, rutaDestino, nombreArchivo) {
-    const rutaArchivo = `${rutaOrigen}/${nombreArchivo}`;
     let count = 0;
     let retorno;
     while(count < 5) {
         try {
-            const zip = new AdmZip(rutaArchivo);
+            const zip = new AdmZip(rutaOrigen);
             zip.extractAllTo(rutaDestino, true);
             count = 5;
             retorno = true
         } catch(error) {
             count++;
             await new Promise(resolve => setTimeout(resolve, 1000));
+            console.log('error al descomprimir', error);
         }
     }
 
     if(retorno === undefined) retorno = false;
 
-    return retorno;
+    return [retorno];
 }
 
 // renombra o rehubica archivos
 async function renombrarRehubicar(rutaOrigen, rutaDestino, intentosRestantes) {
-    let retorno;
-    if(intentosRestantes <= 0) {
-        retorno = false;
-        return retorno;
-    }
+    if(intentosRestantes <= 0) return [false];
 
     try {
         const nombreArchivo = rutaOrigen.split('/').pop();
@@ -85,9 +94,7 @@ async function renombrarRehubicar(rutaOrigen, rutaDestino, intentosRestantes) {
             if(!err) fs.writeFile(`${rutaDestino}/${nombreArchivo}`, data, (err) => { if(err) console.error('Error al copiar el archivo', err) });
         });
 
-        retorno = true;
-        
-        return retorno;
+        return [true, `${rutaDestino}/${nombreArchivo}`];
     } catch(error) {
         await renombrarRehubicar(rutaOrigen, rutaDestino, intentosRestantes -1);
     }
@@ -108,6 +115,7 @@ async function eliminarArchivos(rutaArchivo) {
 }
 
 module.exports = {
+    leerArchivosZip,
     descomprimir,
     almacenarArchivos,
     eliminarArchivos,
