@@ -39,6 +39,13 @@ export class FormComponent {
   }
   
   agregarMiniatura($event: any): void {
+    const imagen: File = $event.target.files[0];
+    
+    if(imagen) {
+      const leer = new FileReader();
+      leer.onload = (e: any) => this.uploadService.setImagenCurso(e.target.result);
+      leer.readAsDataURL(imagen);
+    }
     this.miniatruaFile = this.agregarArchivo($event);
   }
 
@@ -66,8 +73,8 @@ export class FormComponent {
       this.crearCuerpoArchivos(body);
       this.appService.postCursos(body).subscribe({
         complete: () => {
-          $event.preventDefault();
           this.formFormulario.reset();
+          this.uploadService.reiniciarValores();
         }
       });
     }

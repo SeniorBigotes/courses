@@ -1,65 +1,92 @@
 // En controladorCursos.js
-const { almacenarArchivos, leerArchivosZip } = require('../ayuda/helpers');
-const { miniaturas, cursos } = require('../ayuda/multer');
+const { almacenarArchivos, leerArchivosZip, eliminarArchivos, verificarArchivos, renombreCarpeta, ultimoELemento } = require('../ayuda/helpers');
+const { miniaturas, cursos, primeraEjecucion } = require('../ayuda/multer');
 const connection = require('../conexionSQL');
 
 // Operación CRUD: Crear un nuevo curso
 async function crearCurso(req, res) {
-    const { tema, titulo, descripcion, usuarioID } = req.body;
+    if(primeraEjecucion[0]) {
+        while(primeraEjecucion.length !== 1) primeraEjecucion.shift();
 
-    // console.log(`files\n`, req.files);
-    // console.log(`body\n`, req.body);
-
-    // console.log('miniaturas', miniaturas);
-    // console.log('cursos', cursos);
-    
-    const miniaturasRuta = `public/${usuarioID}/miniaturas`;
-    const cursosRuta = `public/${usuarioID}/cursos`;
-    const rutaOrigen = 'public/upload';
-
-    const contenidoArchivosZip = await leerArchivosZip(`${rutaOrigen}/${cursos}`, cursosRuta);
-    const miniAlmacenadas = await almacearMiniaturas(miniaturas, rutaOrigen, miniaturasRuta);
-    const cursosAlmacenados = await almacenarCursos(cursos, rutaOrigen, cursosRuta);
-    
-    // console.log('cursos:', cursosAlmacenados[0]);
-    // console.log('miniaturas:', miniAlmacenadas[0][1]);
-    // console.log('contenido:', contenidoArchivosZip);
-    
-    if(cursosAlmacenados[0] && miniAlmacenadas[0]) {
-        const duracion = contenidoArchivosZip.length;
-        const miniatura = req.files.miniatura.filename;
-        const miniatura_url = miniAlmacenadas[0][1]
+        const { tema, titulo, descripcion, usuarioID } = req.body;
         
-        const insertCursos = `insert into 
-        cursos (titulo, descripcion, duracion, miniatura, miniatura_url, tema, usuario_id)
-        values ('${titulo}', '${descripcion}', ${duracion}, '${miniatura}', '${miniatura_url}', '${tema}', ${usuarioID})`;
+        // rutas general y de rehubicacion
+        const miniaturasRuta = `public/${usuarioID}/miniaturas`;
+        const cursosRuta = `public/${usuarioID}/cursos`;
+        const rutaOrigen = 'public/upload';
     
-        const seleccion = 'select * from usuarios'
+        // archivos a manejar
+        const cursoUltimo = ultimoELemento(cursos);
+        const miniaturaUltima = ultimoELemento(miniaturas);
+        
+        // leer contendio de los archivos comprimidos
+        let contenidoArchivosZip;
+        await leerArchivosZip(`${rutaOrigen}/${cursoUltimo}`, cursosRuta)
+            .then(contenido => contenidoArchivosZip = contenido)
+            .catch(err => console.log('error al leer (Promesa)', err));
+    
+        // ruta establecida de los archivos
+        const miniAlmacenadas = await almacearMiniaturas(miniaturaUltima, rutaOrigen, miniaturasRuta);
+        const cursosAlmacenados = await almacenarCursos(cursoUltimo, rutaOrigen, cursosRuta);
 
-        connection.query(insertCursos, (err, result) => {
-            if(err) {
-                console.log('Error al subir a la base de datos');
-            } else {
-                const curso_id = result.insertId;
-                contenidoArchivosZip.forEach(contenido => {
-                    const insertLecciones = `insert into lecciones (nombre, ubicacion, curso_id) 
-                                            values ('${contenido.nombre}', '${contenido.ruta}', ${curso_id})`;
-                    connection.query(insertLecciones, (err, result) => {
-                        if(err) console.log('Error al insertar:', err)
+        // renombrar carpeta
+        renombreCarpeta(contenidoArchivosZip, cursosRuta, titulo);
+    
+        // conexion a sql
+        if(cursosAlmacenados[0] && miniAlmacenadas[0] && contenidoArchivosZip) {
+            const duracion = contenidoArchivosZip.length;
+            const miniatura = miniaturaUltima;
+            const miniatura_url = miniAlmacenadas[1];
+            
+            const insertCursos = `insert into 
+            cursos (titulo, descripcion, duracion, miniatura, miniatura_url, tema, usuario_id)
+            values ('${titulo}', '${descripcion}', ${duracion}, '${miniatura}', '${miniatura_url}', '${tema}', ${usuarioID})`;
+        
+            const seleccion = 'select * from usuarios';
+    
+            let error;
+            connection.query(insertCursos, (err, result) => {
+                if(err) {
+                    console.log('Error al subir a la base de datos');
+                    error = err;
+                } else {
+                    const curso_id = result.insertId;
+                    contenidoArchivosZip.forEach(contenido => {
+                        const insertLecciones = `insert into lecciones (nombre, ubicacion, curso_id) 
+                                                values ('${contenido.nombre}', '${contenido.ruta}', ${curso_id})`;
+                        connection.query(insertLecciones, (err, result) => {
+                            if(err) error = err;
+                        });
                     });
-                });
-            }
+                }
+            });
+
+            error ? 
+                res.status(500).json({mensaje: 'Error al crear el curso', error}) :
+                res.status(201).json({mensaje: 'Curso creado con exito'});
+        }
+    } else {
+        const archivosTotales = [miniaturas, cursos];
+        while(primeraEjecucion.length !== 1) primeraEjecucion.shift();
+        archivosTotales.forEach(archivos => {
+            archivos.forEach(async archivo => {
+                const ruta = `public/upload/${archivo}`;
+                const existe = verificarArchivos(ruta);
+                if(existe) eliminarArchivos(ruta);
+            });
         });
     }
 }
 
+// almacenar, descomprimir, rehubicar, leer contenido y eliminar residuos
 async function almacenarCursos(cursos, rutaOrigen, rutaDestino) {
-    const promesas = cursos.map(curso => almacenarArchivos(curso, rutaOrigen, rutaDestino));
+    const promesas = await almacenarArchivos(cursos, rutaOrigen, rutaDestino);
     return await Promise.all(promesas); // esperar a que se cumplan todas las promesas
 }
 
+// almacenar, rehubicar contenido y eliminar residuos
 async function almacearMiniaturas(miniaturas, rutaOrigen, rutaDestino) {
-    const promesas =  miniaturas.map(miniatura => almacenarArchivos(miniatura, rutaOrigen, rutaDestino));
+    const promesas = await almacenarArchivos(miniaturas, rutaOrigen, rutaDestino);
     return await Promise.all(promesas);
 }
 

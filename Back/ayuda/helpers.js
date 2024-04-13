@@ -2,25 +2,35 @@ const AdmZip = require('adm-zip');
 const fs = require('fs'); // modificacion de archivos del sistema
 
 // leer contenido de carpeta comprimida
+
+// solucionar errores
 async function leerArchivosZip(rutaOrigen, rutaDestino) {
-
     let contenidoCurso = [];
-    try {
-        const zip = new AdmZip(rutaOrigen);
-        const zipContenido = zip.getEntries();
 
-        zipContenido.forEach(entry => {
-            const datos = {
-                ruta: `${rutaDestino}/${entry.entryName}`,
-                nombre: entry.name
-            }
-            contenidoCurso.push(datos);
-        });
-        return contenidoCurso;
-    } catch(error) {
-        console.error('Error al leer archivos:', error);
-        return null;
+    const existe = verificarArchivos(rutaOrigen);
+    if(existe) {
+        try {
+            const zip = new AdmZip(rutaOrigen);
+            const zipContenido = zip.getEntries();
+    
+            zipContenido.forEach(entry => {
+                if(!entry.isDirectory) {
+                    const datos = {
+                        ruta: `${rutaDestino}/${entry.entryName}`,
+                        nombre: entry.name,
+                        carpetaOrigen: entry.entryName.split('/').shift(),
+                    }
+                    contenidoCurso.push(datos);
+                }
+            });
+    
+            return contenidoCurso;
+        } catch(error) {
+            console.error('Error al leer archivos:', error);
+            return null;
+        }
     }
+
 }
 
 // verificar si existe la carpeta
@@ -51,7 +61,7 @@ async function crearVerificarCarpetas(rutaCarpeta) {
     let count = 0;
 
     // existe?
-    while(!carpetaExistente && count < 5) {
+    while((!carpetaExistente && count < 5)) {
         fs.mkdirSync(rutaCarpeta, { recursive: true });
         count++;
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -61,20 +71,27 @@ async function crearVerificarCarpetas(rutaCarpeta) {
     return count < 5 ? true : false;
 }
 
+function verificarArchivos(rutaArchivo) {
+    return fs.existsSync(rutaArchivo);
+}
+
 // descomprimir archivos
 async function descomprimir(rutaOrigen, rutaDestino, nombreArchivo) {
     let count = 0;
     let retorno;
+    const existe = await verificarArchivos(rutaOrigen);
     while(count < 5) {
-        try {
-            const zip = new AdmZip(rutaOrigen);
-            zip.extractAllTo(rutaDestino, true);
-            count = 5;
-            retorno = true
-        } catch(error) {
-            count++;
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            console.log('error al descomprimir', error);
+        if(existe) {
+            try {
+                const zip = new AdmZip(rutaOrigen);
+                zip.extractAllTo(rutaDestino, true);
+                count = 5;
+                retorno = true
+            } catch(error) {
+                count++;
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                console.log('error al descomprimir', error);
+            }
         }
     }
 
@@ -89,15 +106,42 @@ async function renombrarRehubicar(rutaOrigen, rutaDestino, intentosRestantes) {
 
     try {
         const nombreArchivo = rutaOrigen.split('/').pop();
-        fs.chmod(rutaDestino, 0o755, err => { if(err) console.log('permisos no cambiados', err) });
-        fs.readFile(rutaOrigen, (err, data) => { 
-            if(!err) fs.writeFile(`${rutaDestino}/${nombreArchivo}`, data, (err) => { if(err) console.error('Error al copiar el archivo', err) });
-        });
+        if(cambiarPermisos(rutaDestino)) {
+            fs.readFile(rutaOrigen, (err, data) => { 
+                if(!err) {
+                    fs.writeFile(`${rutaDestino}/${nombreArchivo}`, data, (err) => { 
+                        if(err) {
+                            console.error('Error al copiar el archivo', err);
+                            return [false]; 
+                        }
+                    });
+                } else {
+                    return [false];
+                }
+            });
+        }
 
         return [true, `${rutaDestino}/${nombreArchivo}`];
     } catch(error) {
         await renombrarRehubicar(rutaOrigen, rutaDestino, intentosRestantes -1);
     }
+}
+
+function cambiarPermisos(rutaArchivo) {
+    fs.chmod(rutaArchivo, 0o755, err => {
+        if(err) {
+            console.log('permisos no cambiados', err);
+            return false
+        }
+    });
+    return true;
+}
+
+// renombrar carpeta 
+function renombrarCarpeta(nombreArchivo, nuevoNombre) {
+    fs.rename(nombreArchivo, nuevoNombre, (err) => {
+        if(err) console.log('error al renombrar', err);
+    })
 }
 
 // eliminar archivos
@@ -114,9 +158,28 @@ async function eliminarArchivos(rutaArchivo) {
     }
 }
 
+function ultimoELemento(arreglo) {
+    if(arreglo.length > 1) arreglo.shift();
+    return arreglo[0];
+}
+
+function renombreCarpeta(arreglo, carpetaOrigen, nuevoNombre) {
+    arreglo.forEach(async datos => {
+            const carpetaOriginal = `${carpetaOrigen}/${datos.carpetaOrigen}`;
+            const carpetaRenombrada = `${carpetaOrigen}/${nuevoNombre}`;
+            const verificar = await verificarArchivos(carpetaOriginal);
+            if(verificar) await renombrarCarpeta(carpetaOriginal, carpetaRenombrada);
+        })
+}
+
 module.exports = {
     leerArchivosZip,
     descomprimir,
     almacenarArchivos,
+    renombrarCarpeta,
     eliminarArchivos,
+    crearVerificarCarpetas,
+    verificarArchivos,
+    ultimoELemento,
+    renombreCarpeta,
 }

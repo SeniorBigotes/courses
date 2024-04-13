@@ -15,10 +15,18 @@
         height: 65rem;
     }
 
+    .img {
+        height: 28rem;
+        width: 50rem;
+        object-fit: scale-down;
+        object-position: center;
+        background-color: black;
+    }
+
     .view {
         display: block;
         content: " ";
-        height: 30rem;
+        height: 28rem;
         width: 50rem;
         background-color: #000;
         margin: 0 auto 2rem auto;
@@ -33,7 +41,7 @@
             height: auto;
             max-height: 12rem;
             overflow: auto;
-            text-align: justify;
+            text-align: center;
     
             @include m.pc-mediano {
                 max-height: 25rem;
