@@ -1,8 +1,13 @@
 <div class="upload">
-    <section class="">
-        <app-form/>
-    </section>
-    <section class="">
-        <app-preview/>
-    </section>
+
+    <p class="mensaje" [ngClass]="mensaje === '' ? 'hidden-mensaje' : 'show-mensaje'">Curso creado con exito</p>
+
+    <div class="d-flex justify-content-evenly align-items-start">
+        <section class="">
+            <app-form/>
+        </section>
+        <section class="">
+            <app-preview/>
+        </section>
+    </div>
 </div>

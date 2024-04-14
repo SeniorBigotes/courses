@@ -11,6 +11,8 @@ export class UploadService {
   private descripcionVideo: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private imagenCurso: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
+  private mensaje: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
   constructor() { }
 
   reiniciarValores(): void {
@@ -29,11 +31,17 @@ export class UploadService {
     this.descripcionVideo.next(descripcion);
   }
 
+
   // imgresar la miniatura del curso
   setImagenCurso(img: string): void {
     this.imagenCurso.next(img);
   }
 
+  setMensaje(msj: string): void {
+    this.mensaje.next(msj);
+  }
+
+  /* GETTERS */
   // obtener el titulo en tiempo real
   get $tituloVideo(): Observable<string> {
     return this.tituloVideo.asObservable()
@@ -47,5 +55,9 @@ export class UploadService {
   // obtener la miniatura del curso
   get $imagenCurso(): Observable<string> {
     return this.imagenCurso.asObservable();
+  }
+
+  get $mensaje(): Observable<string> {
+    return this.mensaje.asObservable();
   }
 }

@@ -11,10 +11,6 @@
     justify-content: flex-start;
     align-items: center;
 
-    @include m.pc-mediano {
-        height: 65rem;
-    }
-
     .img {
         height: 28rem;
         width: 50rem;

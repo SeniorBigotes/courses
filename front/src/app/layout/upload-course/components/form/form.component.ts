@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UploadService } from '../../upload.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppService } from '../../../../app.service';
 import { LoginService } from '../../../login/login.service';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form',
@@ -12,16 +13,23 @@ import { of } from 'rxjs';
   templateUrl: './form.component.html',
   styleUrl: './form.component.scss'
 })
-export class FormComponent {
+export class FormComponent implements OnInit {
 
   cursoFile!: any;
   miniatruaFile!: any;
   formFormulario: FormGroup = this.formGroup();
 
+  inputMini: string = 'Seleccionar miniatura';
+  inputCurso: string = 'Seleccionar curso';
+
   constructor(private uploadService: UploadService,
               private appService: AppService,
               private loginService: LoginService,
-              private fb: FormBuilder) {}
+              private fb: FormBuilder,
+              private router: Router) {}
+
+  ngOnInit(): void {
+  }
 
   // mostrar cambios en preview component
   cambiosTitulo(event: any): void {
@@ -36,17 +44,19 @@ export class FormComponent {
   // agregar los cursos
   agregarCurso($event: any): void {
     this.cursoFile = this.agregarArchivo($event);
+    this.inputCurso = this.cursoFile.archivoGral.name;
   }
   
   agregarMiniatura($event: any): void {
-    const imagen: File = $event.target.files[0];
-    
+    const imagen: File = $event.target.files[0];    
     if(imagen) {
       const leer = new FileReader();
       leer.onload = (e: any) => this.uploadService.setImagenCurso(e.target.result);
       leer.readAsDataURL(imagen);
     }
     this.miniatruaFile = this.agregarArchivo($event);
+    this.inputMini = this.miniatruaFile.archivoGral.name;
+
   }
 
   private agregarArchivo($event: any): any {
@@ -60,7 +70,9 @@ export class FormComponent {
   }
 
   enviar($event: any): void {
-    this.enviarFormulario($event);
+    if(this.formFormulario.valid && this.cursoFile && this.miniatruaFile) {
+      this.enviarFormulario($event);
+    }
   }
 
   enviarFormulario($event: any): void {
@@ -75,11 +87,16 @@ export class FormComponent {
         complete: () => {
           this.formFormulario.reset();
           this.uploadService.reiniciarValores();
-        }
+          this.uploadService.setMensaje('Curso creado con exito');
+          setTimeout(() => {
+            this.uploadService.setMensaje('');
+            this.router.navigate(['/']);
+          }, 1500);
+        },
+        error: err => this.uploadService.setMensaje('Error al crear el curso'),
       });
     }
   }
-
 
   // agregar datos al FormData
   private crearCuerpoArchivos(body: FormData): void {

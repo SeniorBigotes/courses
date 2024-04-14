@@ -15,8 +15,9 @@
 
         <div class="asside-nav d-flex flex-column justify-content-between">
             <ul class="ul d-flex flex-column gap-4">
-                <li><a routerLink="">Mis cursos</a></li>
-                <li><a routerLink="">Cursos por materia</a></li>
+                <li (click)="porID()">Todos los cursos</li>
+                <li (click)="porUsuario()">Mis cursos</li>
+                <li>Cursos por materia</li>
             </ul>
 
             <div class="botones">

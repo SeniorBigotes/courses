@@ -90,6 +90,15 @@ async function almacearMiniaturas(miniaturas, rutaOrigen, rutaDestino) {
     return await Promise.all(promesas);
 }
 
+function obtenerMiniaturaId(req, res) {
+    const cursoID = req.params.cursoID;
+    let tumbnaiUrl;
+    connection.query(`SELECT miniatura_url FROM cursos WHERE id = ${cursoID}`, (err, result) => {
+        tumbnaiUrl = `http://localhost:3000/${result[0].miniatura_url}`;
+        res.json({tumbnaiUrl});
+    })
+}
+
 // Operación CRUD: Leer todos los cursos
 function obtenerCursos(req, res) {
     connection.query('SELECT * FROM cursos', (error, results) => {
@@ -99,6 +108,26 @@ function obtenerCursos(req, res) {
         } else {
             res.status(200).json(results);
         }
+    });
+}
+
+function porID(req, res) {
+    const ordenar = req.params.ordenar;
+    const orderBool = ordenar === 'true';
+    let ascDesc = orderBool ? 'ASC' : 'DESC';
+    connection.query(`SELECT * FROM cursos ORDER BY id ${ascDesc}`, (err, result) => {
+        err ? 
+            res.status(500).json({mensaje: 'Error al obtener cursos'}) :
+            res.status(200).send(result);
+    })
+}
+
+function porUsuario(req, res) {
+    const usuarioID = req.params.userID;
+    connection.query(`SELECT * FROM cursos WHERE usuario_id = ${usuarioID}`, (err, result) => {
+        err ? 
+            res.status(500).json({mensaje: 'Error al obtener cursos'}) :
+            res.status(200).send(result);
     });
 }
 
@@ -159,6 +188,9 @@ module.exports = {
     crearCurso,
     obtenerCursos,
     obtenerCursoPorId,
+    obtenerMiniaturaId,
     actualizarCurso,
-    eliminarCurso
+    eliminarCurso,
+    porID,
+    porUsuario,
 };

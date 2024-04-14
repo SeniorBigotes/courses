@@ -5,7 +5,7 @@
     <input class="" type="text" maxlength="65" placeholder="Título" formControlName="titulo" (input)="cambiosTitulo($event)">
 
     <select name="temas" formControlName="tema">
-        <option value="">Tema</option>
+        <option value="" selected>Tema</option>
         <option value="matematicas">Matemáticas</option>
         <option value="espanol">Español</option>
         <option value="ciencias">Ciencias</option>
@@ -19,16 +19,16 @@
     </select>
     
     <div class="div-file">
-        <label class="label-file" for="curso">Cargar Curso</label>
+        <label class="label-file" for="curso">{{inputCurso}}</label>
         <input class="input-file" type="file" id="curso" (change)="agregarCurso($event)">
     </div>
     
     <div class="div-file">
-        <label class="label-file" for="mini">Imagen del curso</label>
+        <label class="label-file" for="mini">{{inputMini}}</label>
         <input class="input-file" type="file" id="mini" (change)="agregarMiniatura($event)">
     </div>
     
     <textarea placeholder="Descripción del video" formControlName="descripcion" (input)="cambiosDescripcion($event)"></textarea>
     
-    <button class="btn btn-pink">Publicar</button>
+    <button class="btn btn-pink" [disabled]="formFormulario.invalid">Publicar</button>
 </form>

@@ -41,6 +41,22 @@ export class AppService {
     return this.http.delete(`${this.usuariosUrl}/${usuarioID}`);
   }
 
+  getCursos(): Observable<any> {
+    return this.http.get(this.cursosUrl);
+  }
+
+  getCursoOrdenadoID(ordenado: boolean): Observable<any> {
+    return this.http.get(`${this.cursosUrl}/por_id/${ordenado}`);
+  }
+
+  getCursoPorUsuario(usuarioID: number): Observable<any> {
+    return this.http.get(`${this.cursosUrl}/por_usuario/${usuarioID}`);
+  }
+
+  getMiniatura(miniUrl: string): Observable<any> {
+    return this.http.get(`${this.cursosUrl}/miniaturas/${miniUrl}`);
+  }
+
   postCursos(body: any): Observable<any> {
     return this.http.post(this.cursosUrl, body);
   }

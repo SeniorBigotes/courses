@@ -15,6 +15,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
+// servir archivos estaticos
+app.use('/public', express.static('./public'));
+
 // Rutas
 app.use('/api/usuarios', usuariosRouter);
 app.use('/api/cursos', cursosRouter);

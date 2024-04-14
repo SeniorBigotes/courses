@@ -48,13 +48,17 @@
             @include m.resetear-lista;
 
             li {
-                a {
-                    display: block;
-                    width: 90%;
-                    margin: auto;
-                    background-color: #fff;
-                    border-radius: 1rem;
-                    text-align: center;
+                display: block;
+                width: 90%;
+                margin: auto;
+                background-color: #fff;
+                border-radius: 1rem;
+                text-align: center;
+                cursor: pointer;
+                transition: all .2s ease-in-out;
+
+                &:hover {
+                    background-color: darken( #fff, 15);
                 }
             }
         }

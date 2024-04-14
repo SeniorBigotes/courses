@@ -2,24 +2,16 @@
     <h2>Cursos recientes</h2>
 
     <div class="courses">
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
-        <app-course/>
+        @for(curso of cursos; track curso) {
+        <div class="course">
+            <img [src]="miniaturas[curso.id]?.tumbnaiUrl" alt="Imagen del curso" class="course-img">
+        
+            <div class="course-info">
+                <h3>{{curso.titulo}}</h3>
+                <p class="auth">{{usuarios[curso.usuario_id]}}</p>
+                <p>Especialidad: <span class="text-uppercase">{{curso.tema}}</span></p>
+            </div>
+        </div>
+        }
     </div>
 </main>
