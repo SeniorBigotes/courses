@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { AppService } from '../../../../app.service';
 import { MainService } from '../../main.service';
+import { Router, RouterModule } from '@angular/router';
+import { ViewService } from '../../../view-course/view.service';
 
 @Component({
   selector: 'app-courses',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss'
 })
@@ -16,7 +18,9 @@ export class CoursesComponent {
   miniaturas: any = [];
 
   constructor(private appService: AppService,
-              private mainService: MainService
+              private mainService: MainService,
+              private viewService: ViewService,
+              private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +40,12 @@ export class CoursesComponent {
     });
 
     this.mainService.$cursos.subscribe(data => this.cursos = data)
+  }
+
+  navegar(curso: any) {
+    this.router.navigate([`view/${curso.titulo.replace(/ /g, '_')}`]);
+    this.viewService.setCursoID(curso.id);
+    this.viewService.setLocalStorage('cursoID', curso.id);
   }
 
 }

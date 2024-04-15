@@ -5,17 +5,10 @@
     <input class="" type="text" maxlength="65" placeholder="Título" formControlName="titulo" (input)="cambiosTitulo($event)">
 
     <select name="temas" formControlName="tema">
-        <option value="" selected>Tema</option>
-        <option value="matematicas">Matemáticas</option>
-        <option value="espanol">Español</option>
-        <option value="ciencias">Ciencias</option>
-        <option value="historia">Historia</option>
-        <option value="geografia">Geografía</option>
-        <option value="ingles">Inglés</option>
-        <option value="arte">Arte</option>
-        <option value="musica">Música</option>
-        <option value="educacion_fisica">Educación Física</option>
-        <option value="computacion">Computación</option>
+        <option value="" selected>Materia</option>
+        @for(mat of materias; track mat){
+            <option [value]="mat.nombre">{{mat.nombre}}</option>
+        }
     </select>
     
     <div class="div-file">

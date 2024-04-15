@@ -43,15 +43,6 @@ CREATE TABLE lecciones (
     FOREIGN KEY (curso_id) REFERENCES cursos(id)
 );
 
-#PROGESO DE LOS USUARIOS
-CREATE TABLE progreso_usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY UNIQUE,
-    usuario_id INT,
-    curso_id INT,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-    FOREIGN KEY (curso_id) REFERENCES cursos(id)
-);
-
 #INSERTAR DATOS NECESARIOS PARA QUE FUNCIONE EL PROGRAMA
 INSERT INTO roles (nombre) VALUE ('Administrador'), ('Docente'), ('Alumno');
 INSERT INTO usuarios (nombres, apellido_P, apellido_M, nombre_U, contraseña, rol_id)
@@ -59,4 +50,6 @@ VALUE ('usuario', 'apellido_p', 'apellido_m', 'usuario', 123, 1);
 
 #Actualizar la configuracion de autentificacion (ejecutar si sale el error:
 	#Error: ER_NOT_SUPPORTED_AUTH_MODE en backend (express)
+#usuario_mysql = usuario al iniciar el mysql
+#contraseña_mysql = contrasela al inicar el mysql
 ALTER USER 'usuario_mysql'@'localhost' IDENTIFIED WITH mysql_native_password BY 'contraseña_mysql';

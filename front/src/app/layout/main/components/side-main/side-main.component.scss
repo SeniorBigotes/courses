@@ -47,7 +47,7 @@
         ul {
             @include m.resetear-lista;
 
-            li {
+            li, select {
                 display: block;
                 width: 90%;
                 margin: auto;
@@ -60,6 +60,10 @@
                 &:hover {
                     background-color: darken( #fff, 15);
                 }
+            }
+
+            select {
+                border: none;
             }
         }
 

@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-between">
+    <div class="w-100">
+        <h4 class="titulo-video">{{videoNombre}}</h4>
+
+        <div class="video">
+            @if(videoUrl) {
+                <video [src]="videoUrl" controls></video>
+            } @else {
+                <div class="video-black"></div>
+            }
+        </div>
+    
+        <div class="titulo">
+            <h2>{{curso.titulo}}</h2>
+            <p>Autor: <span>{{autor.nombre_U}}</span></p>
+        </div>
+    
+        <div class="descripcion">
+            <h4>Descripcion:</h4>
+            <p>{{curso.descripcion}}</p>
+        </div>
+    </div>
+
+    <div class="line"></div>
+</div>

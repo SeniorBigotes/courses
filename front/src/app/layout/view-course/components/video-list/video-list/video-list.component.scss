@@ -1,0 +1,27 @@
+@use '../../../../../../styles.scss' as m;
+
+.lecciones {
+    @include m.resetear-lista();
+
+    li {
+        .leccion {
+            border-radius: .5rem;
+            cursor: pointer;
+            transition: all .15s ease-in;
+            width: 95%;
+            margin: auto;
+            
+            &:hover {
+                background-color: darken(#fff, 15);
+            }
+            .index {
+                margin: .5rem .7rem !important;
+            }
+        }
+        
+        &:active {
+            background-color: darken(#fff, 15);
+        }
+    }
+
+}

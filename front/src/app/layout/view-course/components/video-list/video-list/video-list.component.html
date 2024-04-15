@@ -1,0 +1,15 @@
+<div>
+    <div class="my-3">
+        <h3 class="text-center">Lecciones</h3>
+    </div>
+
+    <ul class="lecciones">
+        @for(leccion of lecciones; track leccion.id) {
+            <li (click)="verLeccion(leccion.nombre)">
+                <div class="leccion">
+                    <p class="index">{{indiceLeccion[leccion.id]}} - {{leccion.nombre}}</p>
+                </div>
+            </li>
+        }
+    </ul>
+</div>

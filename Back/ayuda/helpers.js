@@ -71,8 +71,8 @@ async function crearVerificarCarpetas(rutaCarpeta) {
     return count < 5 ? true : false;
 }
 
-function verificarArchivos(rutaArchivo) {
-    return fs.existsSync(rutaArchivo);
+async function verificarArchivos(rutaArchivo) {
+    return await fs.existsSync(rutaArchivo);
 }
 
 // descomprimir archivos
@@ -138,10 +138,8 @@ function cambiarPermisos(rutaArchivo) {
 }
 
 // renombrar carpeta 
-function renombrarCarpeta(nombreArchivo, nuevoNombre) {
-    fs.rename(nombreArchivo, nuevoNombre, (err) => {
-        if(err) console.log('error al renombrar', err);
-    })
+async function renombrarCarpeta(nombreArchivo, nuevoNombre) {
+    await fs.rename(nombreArchivo, nuevoNombre, (err) => {})
 }
 
 // eliminar archivos
@@ -163,13 +161,22 @@ function ultimoELemento(arreglo) {
     return arreglo[0];
 }
 
-function renombreCarpeta(arreglo, carpetaOrigen, nuevoNombre) {
-    arreglo.forEach(async datos => {
+async function renombreCarpeta(arreglo, carpetaOrigen, nuevoNombre) {
+    const promesa = await Promise.all(
+        arreglo.map(async datos => {
             const carpetaOriginal = `${carpetaOrigen}/${datos.carpetaOrigen}`;
             const carpetaRenombrada = `${carpetaOrigen}/${nuevoNombre}`;
+            const ruta = await sustituir(carpetaRenombrada, / /g, '_');
             const verificar = await verificarArchivos(carpetaOriginal);
-            if(verificar) await renombrarCarpeta(carpetaOriginal, carpetaRenombrada);
+            if(verificar) await renombrarCarpeta(carpetaOriginal, ruta);
+            return ruta;
         })
+    );
+    return promesa;
+}
+
+function sustituir(texto, cambiar, por) {
+    return texto.replace(cambiar, por);
 }
 
 module.exports = {
@@ -182,4 +189,5 @@ module.exports = {
     verificarArchivos,
     ultimoELemento,
     renombreCarpeta,
+    sustituir,
 }

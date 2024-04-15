@@ -30,7 +30,7 @@ async function crearCurso(req, res) {
         const cursosAlmacenados = await almacenarCursos(cursoUltimo, rutaOrigen, cursosRuta);
 
         // renombrar carpeta
-        renombreCarpeta(contenidoArchivosZip, cursosRuta, titulo);
+        const rutaRenombrada = await renombreCarpeta(contenidoArchivosZip, cursosRuta, titulo);
     
         // conexion a sql
         if(cursosAlmacenados[0] && miniAlmacenadas[0] && contenidoArchivosZip) {
@@ -52,8 +52,9 @@ async function crearCurso(req, res) {
                 } else {
                     const curso_id = result.insertId;
                     contenidoArchivosZip.forEach(contenido => {
+                        const ruta = `${rutaRenombrada[0]}/${contenido.nombre}`;
                         const insertLecciones = `insert into lecciones (nombre, ubicacion, curso_id) 
-                                                values ('${contenido.nombre}', '${contenido.ruta}', ${curso_id})`;
+                                                values ('${contenido.nombre}', '${ruta}', ${curso_id})`;
                         connection.query(insertLecciones, (err, result) => {
                             if(err) error = err;
                         });
@@ -111,6 +112,7 @@ function obtenerCursos(req, res) {
     });
 }
 
+// filtrar por id del curso (asc, desc)
 function porID(req, res) {
     const ordenar = req.params.ordenar;
     const orderBool = ordenar === 'true';
@@ -122,9 +124,20 @@ function porID(req, res) {
     })
 }
 
+// filtrar por usuario
 function porUsuario(req, res) {
     const usuarioID = req.params.userID;
     connection.query(`SELECT * FROM cursos WHERE usuario_id = ${usuarioID}`, (err, result) => {
+        err ? 
+            res.status(500).json({mensaje: 'Error al obtener cursos'}) :
+            res.status(200).send(result);
+    });
+}
+
+// filtrar por materia
+function porMateria(req, res) {
+    const materia = req.params.materia;
+    connection.query(`SELECT * FROM cursos WHERE tema = '${materia}'`, (err, result) => {
         err ? 
             res.status(500).json({mensaje: 'Error al obtener cursos'}) :
             res.status(200).send(result);
@@ -193,4 +206,5 @@ module.exports = {
     eliminarCurso,
     porID,
     porUsuario,
+    porMateria,
 };

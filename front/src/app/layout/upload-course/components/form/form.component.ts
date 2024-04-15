@@ -5,6 +5,7 @@ import { AppService } from '../../../../app.service';
 import { LoginService } from '../../../login/login.service';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
+import { Materias } from '../../../../shared/materias.enum';
 
 @Component({
   selector: 'app-form',
@@ -14,6 +15,8 @@ import { Router } from '@angular/router';
   styleUrl: './form.component.scss'
 })
 export class FormComponent implements OnInit {
+
+  materias: any = Materias;
 
   cursoFile!: any;
   miniatruaFile!: any;

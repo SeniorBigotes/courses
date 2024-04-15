@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MainService } from '../../main.service';
 import { AppService } from '../../../../app.service';
+import { Materias } from '../../../../shared/materias.enum';
+import { empty } from 'rxjs';
 
 @Component({
   selector: 'app-side-main',
@@ -12,6 +14,7 @@ import { AppService } from '../../../../app.service';
 })
 export class SideMainComponent implements OnInit{
   
+  materias: any = Materias;
 
   usuario!: any;
   userRol: string | null = localStorage.getItem('rol');
@@ -39,7 +42,10 @@ export class SideMainComponent implements OnInit{
     }
   }
 
-  porMateria(): void {
-    // hacer el select para escojer la materia
+  porMateria(valor: any): void {
+    valor !== '' ?
+      this.appService.getCursoPorMateria(valor).subscribe(data => this.mainService.setCursos(data)) :
+      this.porID();
+    
   }
 }

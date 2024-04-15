@@ -1,0 +1,50 @@
+@use '../../../../../../styles.scss' as m;
+
+.video {
+    padding: 1rem;
+    video {
+        width: 100%;
+    }
+}
+
+.titulo-video {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1.5rem;
+}
+
+.video-black {
+    width: 100%;
+    height: 60rem;
+    background-color: #000;
+}
+
+.titulo, .descripcion {
+    width: 95%;
+    margin: auto;
+}
+
+.titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.descripcion {
+    padding-bottom: 2rem;
+
+    h4 {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-top: 1.5rem !important;
+    }
+}
+
+.line {
+    content: "";
+    display: block;
+    height: auto;
+    width: 2px;
+    background: m.$bg-navigation;
+    border-radius: 50%;
+}

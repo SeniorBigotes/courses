@@ -17,7 +17,14 @@
             <ul class="ul d-flex flex-column gap-4">
                 <li (click)="porID()">Todos los cursos</li>
                 <li (click)="porUsuario()">Mis cursos</li>
-                <li>Cursos por materia</li>
+                <li>
+                    <select #select (change)="porMateria(select.value)">
+                        <option value="" selected>Materias (Todas)</option>
+                        @for(mat of materias; track mat) {
+                            <option [value]="mat.nombre">{{mat.nombre}}</option>
+                        }
+                    </select>
+                </li>
             </ul>
 
             <div class="botones">

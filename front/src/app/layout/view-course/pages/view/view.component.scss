@@ -1,0 +1,19 @@
+@use '../../../../../styles.scss' as m;
+
+.curso {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    background-color: #fff;
+    width: 95%;
+    margin: 4rem auto auto;
+    border-radius: 1rem;
+    padding-bottom: 2rem;
+    min-height: 77vh;
+    max-height: 100vh;
+    margin-bottom: 2rem;
+    
+    .lateral {
+        overflow: auto;
+        max-height: 100vh;
+    }
+}

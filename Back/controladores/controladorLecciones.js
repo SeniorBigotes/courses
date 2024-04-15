@@ -24,7 +24,9 @@ function crearLeccion(req, res) {
 
 // Operación CRUD: Leer todas las lecciones
 function obtenerLecciones(req, res) {
-    connection.query('SELECT * FROM lecciones', (error, results) => {
+    const cursoID = req.params.id;
+
+    connection.query('SELECT * FROM lecciones WHERE curso_id = ? ORDER BY id ASC', cursoID, (error, results) => {
         if (error) {
             console.error('Error al obtener lecciones: ', error);
             res.status(500).json({ error: 'Error al obtener lecciones' });
@@ -36,20 +38,17 @@ function obtenerLecciones(req, res) {
 
 // Operación CRUD: Leer una lección por su ID
 function obtenerLeccionPorId(req, res) {
-    const idLeccion = req.params.id;
-
-    connection.query('SELECT * FROM lecciones WHERE id = ?', [idLeccion], (error, results) => {
-        if (error) {
-            console.error('Error al obtener lección: ', error);
-            res.status(500).json({ error: 'Error al obtener lección' });
+    const cursoID = req.params.cursoID;
+    const leccion = req.params.leccion;
+    let tumbnaiUrl;
+    connection.query(`SELECT ubicacion FROM lecciones WHERE curso_id = ${cursoID} AND nombre = '${leccion}'`, (err, result) => {
+        if(err) {
+                res.status(404).send('Leccion no encontrada');
         } else {
-            if (results.length > 0) {
-                res.status(200).json(results[0]);
-            } else {
-                res.status(404).json({ mensaje: 'Lección no encontrada' });
-            }
+            tumbnaiUrl = `http://localhost:3000/${result[0].ubicacion}`;
+            res.status(200).json({tumbnaiUrl});
         }
-    });
+    })
 }
 
 // Operación CRUD: Actualizar una lección por su ID
