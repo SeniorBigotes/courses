@@ -31,7 +31,7 @@ CREATE TABLE cursos (
     miniatura_url TEXT NOT NULL,
     tema TEXT NOT NULL,
     usuario_id INT NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
 #LECCIONES
@@ -52,4 +52,4 @@ VALUE ('usuario', 'apellido_p', 'apellido_m', 'usuario', 123, 1);
 	#Error: ER_NOT_SUPPORTED_AUTH_MODE en backend (express)
 #usuario_mysql = usuario al iniciar el mysql
 #contraseña_mysql = contrasela al inicar el mysql
-ALTER USER 'usuario_mysql'@'localhost' IDENTIFIED WITH mysql_native_password BY 'contraseña_mysql';
+# ALTER USER 'usuario_mysql'@'localhost' IDENTIFIED WITH mysql_native_password BY 'contraseña_mysql';
