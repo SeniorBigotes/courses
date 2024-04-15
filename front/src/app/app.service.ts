@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AppService {
 
-  private usuariosUrl: string = 'http://localhost:3000/api/usuarios/';
+  private usuariosUrl: string = 'http://localhost:3000/api/usuarios';
   private rolesUrl: string = 'http://localhost:3000/api/roles/';
   private cursosUrl: string = 'http://localhost:3000/api/cursos';
   private leccionesUrl: string = 'http://localhost:3000/api/lecciones';
@@ -27,7 +27,7 @@ export class AppService {
   }
 
   getUsuarioUsername(username: string): Observable<any> {
-    return this.http.get(`${this.usuariosUrl}/login/${username}`);
+    return this.http.get(`${this.usuariosUrl}/inicio/${username}`);
   }
 
   getRol(id: number): Observable<any> {
