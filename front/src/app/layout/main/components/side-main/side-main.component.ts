@@ -33,6 +33,8 @@ export class SideMainComponent implements OnInit{
 
   porID(): void {
     this.ordenarID = !this.ordenarID;
+    const txt = this.ordenarID ? 'ASCENDENTE' : 'DESCENDENTE';
+    this.mainService.setFiltroText(txt);
     this.appService.getCursoOrdenadoID(this.ordenarID).subscribe(data => this.mainService.setCursos(data));
   }
 
@@ -40,12 +42,14 @@ export class SideMainComponent implements OnInit{
     if(this.usuarioID) {
       this.appService.getCursoPorUsuario(parseInt(this.usuarioID)).subscribe(data => this.mainService.setCursos(data));
     }
+    this.mainService.setFiltroText('MIS CURSOS');
   }
 
   porMateria(valor: any): void {
     valor !== '' ?
       this.appService.getCursoPorMateria(valor).subscribe(data => this.mainService.setCursos(data)) :
       this.porID();
-    
+    if(valor !== '') this.mainService.setFiltroText(valor);
+
   }
 }

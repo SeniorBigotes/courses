@@ -27,6 +27,11 @@ export class UserComponent implements OnInit {
   ascDescUsername: boolean = true; // orden ascendente o descendente por username
   ascDescRol: boolean = true; // orden ascendente o descendente por rol
 
+  pagina: number = 1;
+  totales: number = 0;
+  limite: number = 10;
+  resultados: number = this.limite;
+
   userRol: string | null = localStorage.getItem('rol');
 
   constructor(private appService: AppService,
@@ -36,19 +41,23 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     // verificar rol
     if(!(this.userRol === 'Administrador')) this.router.navigate(['/']);
-    
+
+    this.appService.getTotalUsuarios().subscribe(data => this.totales = data[0].total);
     // obtener a todos los usuarios
-    this.appService.getUsuarios().subscribe(usuarios => {
-      this.usuarios = usuarios;
+    this.appService.getUsuarios(10, 1).subscribe(usuarios => {
+      this.valoresPaginacion(usuarios);
       this.usuariosRespaldo = usuarios;
-      usuarios.forEach((usuario: any) => {
-        // obtener roles de los usuarios
-        this.appService.getRol(usuario.rol_id).subscribe(rol => {
-          this.roles[usuario.id] = rol.nombre;
-        });
-      })
       this.mostrarUsuarios = true;
     });
+  }
+
+  private obtenerRoles(usuarios: any): void {
+    usuarios.forEach((usuario: any) => {
+      // obtener roles de los usuarios
+      this.appService.getRol(usuario.rol_id).subscribe(rol => {
+        this.roles[usuario.id] = rol.nombre;
+      });
+    })
   }
 
   // busca usuarios
@@ -123,5 +132,53 @@ export class UserComponent implements OnInit {
         }, 1000);
       });
     }
+  }
+
+  // numero de pagina
+  entrada(input: any): void {
+    const valor = parseInt(input);
+    if (!isNaN(valor)) {
+      this.pagina = valor;
+      if (this.pagina < 0) this.pagina = 1;
+      this.appService.getUsuarios(this.limite, this.pagina).subscribe(data => this.valoresPaginacion(data))
+    }
+  }
+
+  izqUno(): void {
+    if (this.pagina > 1) {
+      this.pagina -= 1;
+      this.actualizarUsuarios();
+    }
+  }
+  
+  derUno(): void {
+    if (!(this.usuarios.length < this.limite)) {
+      this.pagina += 1;
+      this.actualizarUsuarios();
+    }
+  }
+  
+  private actualizarUsuarios(): void {
+    this.appService.getUsuarios(this.limite, this.pagina).subscribe(data => {
+      this.valoresPaginacion(data);
+    });
+  }
+  
+  private valoresPaginacion(usuarios: any): void {
+    this.usuarios = usuarios;
+    this.obtenerRoles(usuarios);
+  }
+  
+  get resultado() {
+    const ultimoResultado = this.pagina * this.limite;
+    return Math.min(ultimoResultado, this.totales);
+  }
+  
+  cambiarPagina(pagina: number) {
+    this.pagina = pagina;
+  }
+
+  reload(): void {
+    window.location.reload()
   }
 }

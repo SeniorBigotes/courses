@@ -131,3 +131,42 @@
         cursor: pointer;
     }
 }
+
+.pag, .izquierda, .derecha {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.paginacion {
+    border: 1px solid white;
+    width: 60%;
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: .5rem;
+    padding: .5rem 0;
+    .pag {
+    
+        .input {
+            input {
+                border-radius: .5rem;
+                width: 5rem;
+                margin: auto;
+                border: none;
+            }
+        }
+
+        .final, .uno {
+            cursor: pointer;
+        }
+    }
+
+    .res {
+        p {
+            color: white;
+        }
+    }
+}

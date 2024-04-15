@@ -1,17 +1,24 @@
 <main class="main">
-    <h2>Cursos recientes</h2>
+    <h2 class="h2">Cursos ({{filtroText}})</h2>
 
-    <div class="courses">
-        @for(curso of cursos; track curso) {
-        <div class="course" (click)="navegar(curso)">
-            <img class="course-img" [src]="miniaturas[curso.id]?.tumbnaiUrl" alt="Imagen del curso">
-        
-            <div class="course-info">
-                <h3>{{curso.titulo}}</h3>
-                <p class="auth">{{usuarios[curso.usuario_id]}}</p>
-                <p class="meteria">Especialidad: <span>{{curso.tema}}</span></p>
+    @if(cursos.length !== 0) {
+            <div class="courses">
+            @for(curso of cursos; track curso) {
+            <div class="course" (click)="navegar(curso)">
+                <img class="course-img" [src]="miniaturas[curso.id]?.tumbnaiUrl" alt="Imagen del curso">
+            
+                <div class="course-info">
+                    <h3>{{curso.titulo}}</h3>
+                    <p class="auth">{{usuarios[curso.usuario_id]}}</p>
+                    <p class="meteria">Especialidad: <span>{{curso.tema}}</span></p>
+                </div>
             </div>
+            }
         </div>
-        }
-    </div>
+    } @else {
+        <div class="not-found">
+            <p>No hay cursos</p>
+            <img class="img" src="assets/not-found.jpg" alt="No hay cursos">
+        </div>
+    }
 </main>

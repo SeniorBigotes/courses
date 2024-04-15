@@ -26,7 +26,11 @@ function crearUsuario(req, res) {
 
 // Operación CRUD: Leer todos los usuarios
 function obtenerUsuarios(req, res) {
-    connection.query('SELECT * FROM usuarios', (error, results) => {
+    const pagina = req.params.pagina || 1;
+    const limite = req.params.limite || 10;
+    const offset = (pagina - 1) * limite;
+
+    connection.query(`SELECT * FROM usuarios LIMIT ${limite} OFFSET ${offset}`, (error, results) => {
         if (error) {
             console.error('Error al obtener usuarios: ', error);
             res.status(500).json({ error: 'Error al obtener usuarios' });
@@ -34,6 +38,16 @@ function obtenerUsuarios(req, res) {
             res.status(200).json(results);
         }
     });
+}
+
+function totalUsuarios(req, res) {
+    connection.query('SELECT COUNT(*) AS total FROM usuarios', (err, results) => {
+        if(err) {
+            res.status(500).json({mensaje: 'Error al obtener usuarios'});
+        } else {
+            res.status(200).json(results);
+        }
+    })
 }
 
 // Operación CRUD: Leer un usuario por su ID
@@ -156,5 +170,6 @@ module.exports = {
     buscarUsuarios,
     buscarUsername,
     actualizarUsuario,
-    eliminarUsuario
+    eliminarUsuario,
+    totalUsuarios,
 };

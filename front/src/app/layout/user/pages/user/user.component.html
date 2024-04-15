@@ -30,83 +30,141 @@
     
     <p class="mensaje" [ngClass]="mostrarMensaje ? 'mensaje-mostrar' : 'mensaje-ocultar'">{{mensaje}}</p>
 
-    <table class="user">
-        <thead>
-            <tr>
-                <th (click)="ordenarPorID()"><div class="">ID <span class="row" [ngClass]="ascDescId ? 'row-up': 'row-down'">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-compact-up" 
-                    width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke="#ffffff" 
-                    fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M4 13l8 -3l8 3" />
-                    </svg>
-                </span></div></th>
-
-                <th (click)="ordenarPorNombre()"><div class="">Nombres <span class="row" [ngClass]="ascDescNombre ? 'row-up': 'row-down'">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-compact-up" 
-                    width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke="#ffffff" 
-                    fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M4 13l8 -3l8 3" />
-                    </svg>
-                </span></div></th>
-                
-                <th (click)="ordenarPorUsuario()"><div class="">Usuario <span class="row" [ngClass]="ascDescUsername ? 'row-up': 'row-down'">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-compact-up" 
-                    width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke="#ffffff" 
-                    fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M4 13l8 -3l8 3" />
-                    </svg>
-                </span></div></th>
-                
-                <th (click)="ordenarPorRol()"><div class="">Rol <span class="row" [ngClass]="ascDescRol ? 'row-up': 'row-down'">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-compact-up" 
-                    width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke="#ffffff" 
-                    fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M4 13l8 -3l8 3" />
-                    </svg>
-                </span></div></th>
-                
-                <th>Acción</th>
-            </tr>
-        </thead> <!-- fin de la cabecera -->
-        <tbody>
-            @if(mostrarUsuarios) {
-                @for(usuario of usuarios; track usuario.id) {
-                    <tr>
-                        <td>{{usuario.id}}</td>
-                        <td>{{usuario.nombres}} <span class="d-block">{{usuario.apellido_P}} {{usuario.apellido_M}}</span></td>
-                        <td>{{usuario.nombre_U}}</td>
-                        <td>{{roles[usuario.id]}}</td>
-                        <td class="td">
-                            <div class="d-flex align-items-center justify-content-center gap-5">
-                                <div class="editar" (click)="editarUsuario(usuario.id)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="20" height="20"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                        <path d="M16 5l3 3" />
-                                    </svg>
-                                </div>
+    @if(usuarios.length !== 0) {
+        <table class="user">
+            <thead>
+                <tr>
+                    <th (click)="ordenarPorID()"><div class="">ID <span class="row" [ngClass]="ascDescId ? 'row-up': 'row-down'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-compact-up" 
+                        width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke="#ffffff" 
+                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M4 13l8 -3l8 3" />
+                        </svg>
+                    </span></div></th>
     
-                                <div class="eliminar" (click)="eliminarUsuario(usuario.id)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x" width="20" height="20"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M4 7h16" />
-                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                        <path d="M10 12l4 4m0 -4l-4 4" />
-                                    </svg>
-                                </div>
-                            </div> <!-- td -->
-                        </td>
-                    </tr>
+                    <th (click)="ordenarPorNombre()"><div class="">Nombres <span class="row" [ngClass]="ascDescNombre ? 'row-up': 'row-down'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-compact-up" 
+                        width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke="#ffffff" 
+                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 13l8 -3l8 3" />
+                        </svg>
+                    </span></div></th>
+                    
+                    <th (click)="ordenarPorUsuario()"><div class="">Usuario <span class="row" [ngClass]="ascDescUsername ? 'row-up': 'row-down'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-compact-up" 
+                        width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke="#ffffff" 
+                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 13l8 -3l8 3" />
+                        </svg>
+                    </span></div></th>
+                    
+                    <th (click)="ordenarPorRol()"><div class="">Rol <span class="row" [ngClass]="ascDescRol ? 'row-up': 'row-down'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-compact-up" 
+                        width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke="#ffffff" 
+                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 13l8 -3l8 3" />
+                        </svg>
+                    </span></div></th>
+                    
+                    <th>Acción</th>
+                </tr>
+            </thead> <!-- fin de la cabecera -->
+            <tbody>
+                @if(mostrarUsuarios) {
+                    @for(usuario of usuarios; track usuario.id) {
+                        <tr>
+                            <td>{{usuario.id}}</td>
+                            <td>{{usuario.nombres}} <span class="d-block">{{usuario.apellido_P}} {{usuario.apellido_M}}</span></td>
+                            <td>{{usuario.nombre_U}}</td>
+                            <td>{{roles[usuario.id]}}</td>
+                            <td class="td">
+                                <div class="d-flex align-items-center justify-content-center gap-5">
+                                    <div class="editar" (click)="editarUsuario(usuario.id)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="20" height="20"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                            <path d="M16 5l3 3" />
+                                        </svg>
+                                    </div>
+        
+                                    <div class="eliminar" (click)="eliminarUsuario(usuario.id)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x" width="20" height="20"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M4 7h16" />
+                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                            <path d="M10 12l4 4m0 -4l-4 4" />
+                                        </svg>
+                                    </div>
+                                </div> <!-- td -->
+                            </td>
+                        </tr>
+                    }
                 }
-            }
-        </tbody> <!-- fin del cuepo-->
-    </table> <!-- fin fr la tabla -->
+            </tbody> <!-- fin del cuepo-->
+        </table> <!-- fin fr la tabla -->
+   
+        <div class="paginacion">
+            <div class="pag">
+                <div class="izquierda">
+                    <!-- <div class="final" (click)="izqFinal()" [ariaDisabled]="pagina <= 0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-left-lines" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M12 15v3.586a1 1 0 0 1 -1.707 .707l-6.586 -6.586a1 1 0 0 1 0 -1.414l6.586 -6.586a1 1 0 0 1 1.707 .707v3.586h3v6h-3z" />
+                            <path d="M21 15v-6" />
+                            <path d="M18 15v-6" />
+                        </svg>
+                    </div> -->
+                    <div class="uno" (click)="izqUno()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M20 15h-8v3.586a1 1 0 0 1 -1.707 .707l-6.586 -6.586a1 1 0 0 1 0 -1.414l6.586 -6.586a1 1 0 0 1 1.707 .707v3.586h8a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1z" />
+                          </svg>
+                    </div>
+                </div>
+                    
+                <div class="input">
+                    <input #valor type="number" [value]="pagina" (input)="entrada(valor.value)">
+                </div>
+        
+                <div class="derecha">
+                    <div class="uno" (click)="derUno()" [ariaDisabled]="usuarios.length < 10">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 9h8v-3.586a1 1 0 0 1 1.707 -.707l6.586 6.586a1 1 0 0 1 0 1.414l-6.586 6.586a1 1 0 0 1 -1.707 -.707v-3.586h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1z" />
+                        </svg>
+                    </div>
+                    <!-- <div class="final" (click)="derFinal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-right-lines" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M12 9v-3.586a1 1 0 0 1 1.707 -.707l6.586 6.586a1 1 0 0 1 0 1.414l-6.586 6.586a1 1 0 0 1 -1.707 -.707v-3.586h-3v-6h3z" />
+                            <path d="M3 9v6" />
+                            <path d="M6 9v6" />
+                        </svg>
+                    </div> -->
+                </div>
+            </div>
+    
+            <div class="res">
+                <p>{{resultado}} / {{totales}} Totales</p>
+            </div>
+        </div> <!-- fin .paginacion-->
+    } @else {
+        <div class="not-found">
+            <p>No hay usuarios</p>
+            <img class="img" src="assets/not-found.jpg" alt="No hay cursos">
+            <div class="button">
+                <button class="btn btn-pink" (click)="reload()">Recargar</button>
+            </div>
+        </div>
+    }
+
+
 </div>

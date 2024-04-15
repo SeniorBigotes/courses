@@ -164,3 +164,29 @@ img {
         background-color: darken($color-btn-login, 7);
     }
 }
+
+.not-found {
+
+    p {
+        text-transform: uppercase;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 5rem !important;
+        margin-bottom: 2rem !important;
+        font-size: 3rem;
+        text-decoration: underline;
+    }
+    .img {
+        border-radius: 1rem;
+        object-fit: cover;
+        object-position: center;
+        width: 50rem;
+        margin: auto;
+    }
+
+    .button {
+        width: 20%;
+        margin: 2rem auto;
+    }
+}

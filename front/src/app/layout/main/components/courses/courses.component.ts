@@ -13,9 +13,10 @@ import { ViewService } from '../../../view-course/view.service';
 })
 export class CoursesComponent {
 
-  cursos!: any;
+  cursos: any = [];
   usuarios: Array<any> = [];
   miniaturas: any = [];
+  filtroText: string = 'ASCENDENTE';
 
   constructor(private appService: AppService,
               private mainService: MainService,
@@ -23,9 +24,10 @@ export class CoursesComponent {
               private router: Router,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.appService.getCursos().subscribe(c => {
       this.cursos = c;
+      
       c.forEach((datos: any) => {
         this.appService.getMiniatura(datos.id).subscribe({
           next: mini => this.miniaturas[datos.id] = mini,
@@ -39,7 +41,8 @@ export class CoursesComponent {
       });
     });
 
-    this.mainService.$cursos.subscribe(data => this.cursos = data)
+    this.mainService.$cursos.subscribe(data => this.cursos = data);
+    this.mainService.$filtroText.subscribe(data => this.filtroText = data);
   }
 
   navegar(curso: any) {

@@ -14,8 +14,12 @@ export class AppService {
 
   constructor(private http: HttpClient) { }
 
-  getUsuarios(): Observable<any>  {
-    return this.http.get(this.usuariosUrl);
+  getUsuarios(limite: number, pagina: number): Observable<any>  {
+    return this.http.get(`${this.usuariosUrl}/${limite}/${pagina}`);
+  }
+
+  getTotalUsuarios(): Observable<any> {
+    return this.http.get(`${this.usuariosUrl}/total`);
   }
 
   getUsuarioID(id: number): Observable<any> {
