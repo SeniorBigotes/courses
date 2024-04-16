@@ -25,6 +25,6 @@ app.use('/api/lecciones', leccionesRouter);
 app.use('/api/roles', rolesRouter);
 
 // Escuchar en el puerto
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0',() => {
     console.log(`Servidor Express escuchando en el puerto ${PORT}`);
 });

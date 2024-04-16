@@ -5,9 +5,9 @@ const { crearUsuario, obtenerUsuarios, obtenerUsuarioPorId, obtenerUsuarioPorUse
 
 // Rutas para usuarios
 router.get('/total', totalUsuarios);
-router.get('/busqueda/:buscar', buscarUsuarios); // busqueda de usuario por nombre completo
 router.get('/username/:username', buscarUsername); // busqueda de usuario por username
 router.get('/inicio/:username', obtenerUsuarioPorUsername);
+router.get('/busqueda/:buscar/:limite/:pagina', buscarUsuarios); // busqueda de usuario por nombre completo
 router.get('/:id', obtenerUsuarioPorId); // Obtener un usuario por su ID
 router.get('/:limite/:pagina', obtenerUsuarios); // Obtener todos los usuarios
 

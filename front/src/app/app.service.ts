@@ -7,15 +7,19 @@ import { Observable } from 'rxjs';
 })
 export class AppService {
 
-  private usuariosUrl: string = 'http://localhost:3000/api/usuarios';
-  private rolesUrl: string = 'http://localhost:3000/api/roles/';
-  private cursosUrl: string = 'http://localhost:3000/api/cursos';
-  private leccionesUrl: string = 'http://localhost:3000/api/lecciones';
+  private usuariosUrl: string = 'http://172.23.99.157:3000/api/usuarios';
+  private rolesUrl: string = 'http://172.23.99.157:3000/api/roles/';
+  private cursosUrl: string = 'http://172.23.99.157:3000/api/cursos';
+  private leccionesUrl: string = 'http://172.23.99.157:3000/api/lecciones';
 
   constructor(private http: HttpClient) { }
 
   getUsuarios(limite: number, pagina: number): Observable<any>  {
     return this.http.get(`${this.usuariosUrl}/${limite}/${pagina}`);
+  }
+
+  getBuscarUsuarios(busqueda: string, limite: number,pagina: number): Observable<any> {
+    return this.http.get(`${this.usuariosUrl}/busqueda/${busqueda}/${limite}/${pagina}`);
   }
 
   getTotalUsuarios(): Observable<any> {

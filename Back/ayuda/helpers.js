@@ -10,20 +10,23 @@ async function leerArchivosZip(rutaOrigen, rutaDestino) {
     const existe = verificarArchivos(rutaOrigen);
     if(existe) {
         try {
-            const zip = new AdmZip(rutaOrigen);
-            const zipContenido = zip.getEntries();
-    
-            zipContenido.forEach(entry => {
-                if(!entry.isDirectory) {
-                    const datos = {
-                        ruta: `${rutaDestino}/${entry.entryName}`,
-                        nombre: entry.name,
-                        carpetaOrigen: entry.entryName.split('/').shift(),
+            const permisos  = cambiarPermisos(rutaOrigen);
+
+            if(permisos) {
+                const zip = new AdmZip(rutaOrigen);
+                const zipContenido = zip.getEntries();
+        
+                zipContenido.forEach(entry => {
+                    if(!entry.isDirectory) {
+                        const datos = {
+                            ruta: `${rutaDestino}/${entry.entryName}`,
+                            nombre: entry.name,
+                            carpetaOrigen: entry.entryName.split('/').shift(),
+                        }
+                        contenidoCurso.push(datos);
                     }
-                    contenidoCurso.push(datos);
-                }
-            });
-    
+                });
+            }
             return contenidoCurso;
         } catch(error) {
             console.error('Error al leer archivos:', error);
@@ -127,11 +130,12 @@ async function renombrarRehubicar(rutaOrigen, rutaDestino, intentosRestantes) {
     }
 }
 
+// cambiar permisos
 function cambiarPermisos(rutaArchivo) {
-    fs.chmod(rutaArchivo, 0o755, err => {
+    fs.chmod(rutaArchivo, 0o777, err => {
         if(err) {
             console.log('permisos no cambiados', err);
-            return false
+            return false;
         }
     });
     return true;

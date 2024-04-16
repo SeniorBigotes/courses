@@ -63,7 +63,10 @@ export class UserComponent implements OnInit {
   // busca usuarios
   buscar(): void {
     const valorInput = this.input?.nativeElement.value;
-    this.userService.getBuscarUsuarios(valorInput).subscribe(busqueda => this.usuarios = busqueda);
+    this.appService.getBuscarUsuarios(valorInput, this.limite, this.pagina).subscribe({
+      next: busqueda => this.usuarios = busqueda,
+      error: err => this.mostrarMensajes('Usuario no encontrado')
+});
   }
 
   limpiarBusqueda(): void {
@@ -124,14 +127,18 @@ export class UserComponent implements OnInit {
   eliminarUsuario(usuarioID: number): void {
     const eliminar: boolean = confirm('¿Deseas eliminar al usuario?');
     if(eliminar) {
-      this.appService.deleteUsuario(usuarioID).subscribe(() => {
-        this.mostrarMensaje = true;
-        setTimeout(() => {
-          this.mostrarMensaje = false;
-          window.location.reload();
-        }, 1000);
-      });
+      this.appService.deleteUsuario(usuarioID).subscribe(() => this.mostrarMensajes('Usuario eliminado'));
     }
+  }
+
+  private mostrarMensajes(msj: string) {
+    this.mostrarMensaje = true;
+    this.mensaje = msj;
+    setTimeout(() => {
+      this.mostrarMensaje = false;
+      this.mensaje = '';
+      window.location.reload();
+    }, 1000);
   }
 
   // numero de pagina

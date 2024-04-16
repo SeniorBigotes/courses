@@ -1,6 +1,6 @@
 <div class="upload">
 
-    <p class="mensaje" [ngClass]="mensaje === '' ? 'hidden-mensaje' : 'show-mensaje'">Curso creado con exito</p>
+    <p class="mensaje" [ngClass]="!mostrarMensaje ? 'hidden-mensaje' : 'show-mensaje'">{{mensaje}}</p>
 
     <div class="d-flex justify-content-evenly align-items-start">
         <section class="">

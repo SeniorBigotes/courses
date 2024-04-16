@@ -16,6 +16,7 @@ export class UploadComponent implements OnInit {
   
   usuarioUrl: string | null = localStorage.getItem('rol');
   mensaje: string = ''; 
+  mostrarMensaje: boolean = false;
 
   constructor(private router: Router,
               private uploadService: UploadService,
@@ -23,6 +24,17 @@ export class UploadComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.usuarioUrl === 'Alumno') this.router.navigate(['/']);
-    this.uploadService.$mensaje.subscribe(msj => this.mensaje = msj);
+    this.uploadService.$mensaje.subscribe(msj => this.mostrarMensajes(msj));
+  }
+
+  private mostrarMensajes(str: string): void {
+    if(str) {
+      this.mostrarMensaje = true;
+      this.mensaje = str;
+      setTimeout(() => {
+        this.mostrarMensaje = false;
+        this.mensaje = '';
+      }, 1500);
+    }
   }
 }

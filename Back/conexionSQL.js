@@ -2,9 +2,9 @@ const mysql = require('mysql');
 
 // Configuración de la conexión a la base de datos MySQL
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Mortadela1',
+    host: '172.23.99.157',
+    user: 'felix',
+    password: '123456789',
     database: 'db_escuela_ide'
 });
 

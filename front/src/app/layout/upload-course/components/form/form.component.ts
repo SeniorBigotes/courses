@@ -72,13 +72,17 @@ export class FormComponent implements OnInit {
     return bodyArchivo;
   }
 
-  enviar($event: any): void {
-    if(this.formFormulario.valid && this.cursoFile && this.miniatruaFile) {
-      this.enviarFormulario($event);
-    }
+  enviar(): void {
+    const archivos = ((this.cursoFile && this.miniatruaFile) !== undefined);
+    const formulario = this.formFormulario.valid; 
+    const validar = archivos &&formulario;
+
+    validar ? 
+      this.enviarFormulario() : 
+      this.uploadService.setMensaje('Faltan campos por llenar');
   }
 
-  enviarFormulario($event: any): void {
+  private enviarFormulario(): void {
     // convertir a formData cuando se envien datos de tipo binario (archivos)
     const body = new FormData();
     
@@ -87,14 +91,11 @@ export class FormComponent implements OnInit {
     if(username) {
       this.crearCuerpoArchivos(body);
       this.appService.postCursos(body).subscribe({
-        complete: () => {
+        next: () => {
+          this.uploadService.setMensaje('Curso creado con exito');
           this.formFormulario.reset();
           this.uploadService.reiniciarValores();
-          this.uploadService.setMensaje('Curso creado con exito');
-          setTimeout(() => {
-            this.uploadService.setMensaje('');
-            this.router.navigate(['/']);
-          }, 1500);
+          setTimeout(() => this.router.navigate(['/']), 1500);
         },
         error: err => this.uploadService.setMensaje('Error al crear el curso'),
       });

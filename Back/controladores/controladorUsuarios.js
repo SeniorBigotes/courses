@@ -89,10 +89,14 @@ function obtenerUsuarioPorUsername(req, res) {
 // buscar usuarios por nombre, apellido_P o apellido_M
 function buscarUsuarios(req, res) {
     const buscar = req.params.buscar;
+    const pagina = req.params.pagina || 1;
+    const limite = req.params.limite || 10;
+    const offset = (pagina - 1) * limite;
 
     connection.query(`
-    SELECT * FROM usuarios WHERE CONCAT(nombres, ' ', apellido_P, ' ', apellido_M) LIKE '%${buscar}%';
-    `, (error, result) => {
+        SELECT * FROM usuarios WHERE CONCAT(nombres, ' ', apellido_P, ' ', apellido_M) 
+        LIKE '%${buscar}%' LIMIT ${limite} OFFSET ${offset}`,
+    (error, result) => {
         if(error) {
             console.error('Error al buscar el usuario');
             response.status(500).json({error: 'Error al buscar el usuario'});

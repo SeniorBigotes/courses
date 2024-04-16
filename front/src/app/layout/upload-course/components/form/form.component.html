@@ -1,5 +1,5 @@
 <form class="form d-flex flex-column justify-content-around align-items-center gap-5"
-[formGroup]="formFormulario" (ngSubmit)="enviar($event)">
+[formGroup]="formFormulario" (ngSubmit)="enviar()">
     <h2>Subir curso</h2>
 
     <input class="" type="text" maxlength="65" placeholder="Título" formControlName="titulo" (input)="cambiosTitulo($event)">
@@ -13,12 +13,14 @@
     
     <div class="div-file">
         <label class="label-file" for="curso">{{inputCurso}}</label>
-        <input class="input-file" type="file" id="curso" (change)="agregarCurso($event)">
+        <input class="input-file" type="file" id="curso" (change)="agregarCurso($event)"
+        accept="application/zip, application/rar">
     </div>
     
     <div class="div-file">
         <label class="label-file" for="mini">{{inputMini}}</label>
-        <input class="input-file" type="file" id="mini" (change)="agregarMiniatura($event)">
+        <input class="input-file" type="file" id="mini" (change)="agregarMiniatura($event)"
+        accept="image/jpg, image/png, image/webp, image/avif">
     </div>
     
     <textarea placeholder="Descripción del video" formControlName="descripcion" (input)="cambiosDescripcion($event)"></textarea>

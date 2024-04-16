@@ -10,7 +10,6 @@ export class UploadService {
   private tituloVideo: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private descripcionVideo: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private imagenCurso: BehaviorSubject<string> = new BehaviorSubject<string>('');
-
   private mensaje: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor() { }
@@ -19,6 +18,7 @@ export class UploadService {
     this.setTituloVideo('');
     this.setDescripcionVideo('');
     this.setImagenCurso('');
+    this.setMensaje('');
   }
 
   // ingresar el titulo del video
