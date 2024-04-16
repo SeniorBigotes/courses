@@ -2,7 +2,7 @@ const mysql = require('mysql');
 
 // Configuración de la conexión a la base de datos MySQL
 const connection = mysql.createConnection({
-    host: '172.23.99.157',
+    host: process.env.CONF_IP,
     user: 'felix',
     password: '123456789',
     database: 'db_escuela_ide'

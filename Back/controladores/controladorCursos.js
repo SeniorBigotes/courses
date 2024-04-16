@@ -95,7 +95,7 @@ function obtenerMiniaturaId(req, res) {
     const cursoID = req.params.cursoID;
     let tumbnaiUrl;
     connection.query(`SELECT miniatura_url FROM cursos WHERE id = ${cursoID}`, (err, result) => {
-        tumbnaiUrl = `http://172.23.99.157:3000/${result[0].miniatura_url}`;
+        tumbnaiUrl = `${process.env.URL}/${result[0].miniatura_url}`;
         res.json({tumbnaiUrl});
     })
 }

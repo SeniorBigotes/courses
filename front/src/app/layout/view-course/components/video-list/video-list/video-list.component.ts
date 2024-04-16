@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ViewService } from '../../../view.service';
 import { AppService } from '../../../../../app.service';
 import { Subscription } from 'rxjs';
@@ -10,20 +10,18 @@ import { Subscription } from 'rxjs';
   templateUrl: './video-list.component.html',
   styleUrl: './video-list.component.scss'
 })
-export class VideoListComponent implements OnInit, OnDestroy {
+export class VideoListComponent implements OnInit {
 
   lecciones: any[] = []
   cursoID: string | null = localStorage.getItem('cursoID');
   indiceLeccion: any[] = [];
-
-  leccionSub!: Subscription;
 
   constructor(private viewService: ViewService,
               private appService: AppService,
   ) {}
   
   ngOnInit(): void {
-    if (this.cursoID) this.leccionSub = this.appService.getLecciones(parseInt(this.cursoID)).subscribe(data => {
+    if (this.cursoID) this.appService.getLecciones(parseInt(this.cursoID)).subscribe(data => {
       this.lecciones = data;
       this.obtenerIndice(data);
     });
@@ -49,9 +47,5 @@ export class VideoListComponent implements OnInit, OnDestroy {
       count++
       this.indiceLeccion[d.id] = count;
     }
-  }
-
-  ngOnDestroy(): void {
-    this.leccionSub.unsubscribe();
   }
 }

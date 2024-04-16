@@ -1,16 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from './environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppService {
 
-  private usuariosUrl: string = 'http://172.23.99.157:3000/api/usuarios';
-  private rolesUrl: string = 'http://172.23.99.157:3000/api/roles/';
-  private cursosUrl: string = 'http://172.23.99.157:3000/api/cursos';
-  private leccionesUrl: string = 'http://172.23.99.157:3000/api/lecciones';
+  private usuariosUrl: string = `${environment.url}/api/usuarios`;
+  private rolesUrl: string = `${environment.url}/api/roles/`;
+  private cursosUrl: string = `${environment.url}/api/cursos`;
+  private leccionesUrl: string = `${environment.url}/api/lecciones`;
 
   constructor(private http: HttpClient) { }
 

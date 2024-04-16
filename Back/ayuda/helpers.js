@@ -132,7 +132,7 @@ async function renombrarRehubicar(rutaOrigen, rutaDestino, intentosRestantes) {
 
 // cambiar permisos
 function cambiarPermisos(rutaArchivo) {
-    fs.chmod(rutaArchivo, 0o777, err => {
+    fs.chmod(rutaArchivo, 0o666, err => {
         if(err) {
             console.log('permisos no cambiados', err);
             return false;

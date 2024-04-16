@@ -28,7 +28,7 @@ export class SideMainComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    if (this.username) this.mainService.getBuscarUsername(this.username).subscribe(usuario => this.usuario = usuario);
+    if(this.username) this.mainService.getBuscarUsername(this.username).subscribe(usuario => this.usuario = usuario);
   }
 
   porID(): void {

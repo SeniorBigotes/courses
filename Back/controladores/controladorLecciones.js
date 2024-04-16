@@ -45,7 +45,7 @@ function obtenerLeccionPorId(req, res) {
         if(err) {
                 res.status(404).send('Leccion no encontrada');
         } else {
-            tumbnaiUrl = `http://172.23.99.157:3000/${result[0].ubicacion}`;
+            tumbnaiUrl = `${process.env.URL}/${result[0].ubicacion}`;
             res.status(200).json({tumbnaiUrl});
         }
     })
